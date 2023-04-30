@@ -6,6 +6,9 @@ use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\ArticleController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\RoomController;
+use App\Http\Controllers\MessageController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -114,13 +117,15 @@ Route::middleware(['auth'])->group(function() {
         return view('search');
     })->name('search');
     
-    Route::get('messageList', function () {
-        return view('messageList');
-    })->name('messageList');
+    Route::get('messageList', [RoomController::class, 'getRoomList'])->name('messageList');
     
-    Route::get('message', function () {
-        return view('message');
+    Route::get('message', function() {
+        return view('chat.message');
     })->name('message');
+
+    Route::get('message/{room_id}/{user_id}', [MessageController::class, 'inRoom'])->name('inRoom');
+
+    Route::get('room/{id}/{name}', [RoomController::class, 'createRoom'])->name('room');
     
     // admin
     Route::get('admin',[SchoolController::class, 'all'])->name('admin');

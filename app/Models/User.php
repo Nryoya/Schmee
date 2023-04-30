@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -53,7 +54,7 @@ class User extends Authenticatable
      * @return HasMany
      */
     public function articles() {
-        return $this->hasMany(Article::class);
+        return $this->hasMany(Article::class, 'users_id');
     }
     
     /**
@@ -72,6 +73,24 @@ class User extends Authenticatable
      */
     public function likes() {
         return $this->hasMany(Likes::class);
+    }
+
+    /**
+     * roomsテーブルへのリレーション
+     *
+     * @return belongsToMany
+     */
+    public function rooms() {
+        return $this->belongsToMany(Room::class);
+    }
+
+    /**
+     * messagesテーブルへのリレーション
+     *
+     * @return HasMany
+     */
+    public function messages() {
+        return $this->hasMany(Message::class, 'users_id');
     }
 
     /**
@@ -199,5 +218,15 @@ class User extends Authenticatable
                 'imgPath' => $img,
                 'introduction' => $introduction,
             ]);
+    }
+
+    /**
+     * ユーザーの取得
+     *
+     * @param integer $id
+     * @return collection
+     */
+    public function getUser($id) {
+        return $this->find($id);
     }
 }

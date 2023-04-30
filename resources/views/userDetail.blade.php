@@ -6,7 +6,7 @@
     <div class="user__head-imgWrap">
       <img class="user__head-img" src="{{ Storage::url($users->teachers_detail->imgPath) }}">
     </div>
-    <a class="user__head-edit" href="#"><i class="fa-solid fa-envelope"></i></a>
+    <a class="user__head-edit" href="{{ route('room', [$users->id, $users->name]) }}"><i class="fa-solid fa-envelope"></i></a>
   </div>
   <div class="user__detail">
     <div class="user__detail-head">
@@ -45,7 +45,7 @@
     <div class="user__head-imgWrap">
       <img class="user__head-img" src="{{ Storage::url($users->users_detail->imgPath) }}">
     </div>
-    <a class="user__head-edit" href="#"><i class="fa-solid fa-envelope"></i></a>
+    <a class="user__head-edit" href="{{ route('room', [$users->id, $users->name]) }}"><i class="fa-solid fa-envelope"></i></a>
   </div>
   <div class="user__detail">
     <div class="user__detail-head">

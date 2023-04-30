@@ -895,6 +895,35 @@ body {
 }
 
 /*------------------------------------- message.blade.php -------------------------------------*/
+.talk-header {
+	background-color: #435875;
+	height: 50px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.talk-header__wrap {
+	display: flex;
+	align-items: center;
+}
+
+.talk-header__img {
+	width: 30px;
+	height: 30px;
+	object-fit: cover;
+	border-radius: 5px;
+}
+
+.talk-header__name {
+	color: #f7f7f7;
+	font-size: 1.6rem;
+	font-weight: bold;
+	margin-left: 15px;
+}
+
+
+
 /* talk block */
 .talk {
 	padding-bottom: 50px;
@@ -920,6 +949,7 @@ body {
 	border-radius: 5px;
 	width: 30px;
 	height: 30px;
+	object-fit: cover;
 }
 
 .talk__body {
@@ -945,6 +975,7 @@ body {
 	border: #435875 1px solid;
 	padding: 5px;
 	width: calc(100% - 45px);
+	min-width: fit-content;
 }
 
 .talk__message--reverse {
@@ -952,6 +983,7 @@ body {
 	border: #435875 1px solid;
 	padding: 5px;
 	width: calc(100% - 45px);
+	min-width: fit-content;
 }
 
 /* message block */

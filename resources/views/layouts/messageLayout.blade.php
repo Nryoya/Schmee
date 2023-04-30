@@ -1,5 +1,5 @@
 @include('head.head')
-@include('header.backHeader')
+@include('header.talkHeader')
 
 @yield('content')
 

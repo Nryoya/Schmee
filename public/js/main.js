@@ -173,3 +173,32 @@ if(LIKE) {
   }
 }
 
+// メッセージ機能のバリデーション
+const MESSAGE = document.querySelector(".message");
+console.log(MESSAGE);
+if(MESSAGE) {
+  MESSAGE.addEventListener("submit", () => {
+    const BODY = document.querySelector(".message__txt").textContent;
+    const SEGMENTER = new intl.Segmenter("ja", {granularity: "grapheme"});
+    const SEGMENTS = SEGMENTER.segment(BODY);
+    let error = [];
+    console.log(BODY);
+    if(BODY == "") {
+      error.push("メッセージを入力してください。");
+    }
+    if(/.*(ばか|あほ|しね).*/.test(BODY)) {
+      error.push("不適切な文字が含まれています。");
+    }
+    if([...SEGMENTS].length > 250) {
+      error.push("文字数は250文字までです。");
+    }
+    if(error) {
+      alert(error.forEach(element => {
+        element;
+      }));
+      return false;
+    } else {
+
+    }
+  })
+}
