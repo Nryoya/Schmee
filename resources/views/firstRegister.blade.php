@@ -1,6 +1,5 @@
 @extends('layouts.firstLayout')
 @section('content')
-<a href="{{ route('logout') }}">ログアウト</a>
   <form class="form form-margin-big" action="{{ route('userDetail') }}" method="post" enctype="multipart/form-data">
     @csrf
     <h2 class="from__headline">初回登録</h2>

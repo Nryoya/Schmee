@@ -178,4 +178,21 @@ class ArticleController extends Controller
         $article->logicalDelete($id);
         return redirect('articles');
     }
+
+    /**
+     * 記事の検索機能
+     *
+     * @param Request $request
+     * @param Article $article
+     * @return view
+     */
+    public function controllerSearchArticle(Request $request, Article $article) {
+        $keyword = $request->input('search');
+        if(Auth::user()->role == 0) {
+            $articles = $article->modelSearchArticle(['school_id' => Auth::user()->schools_id, 'grade' => Auth::user()->users_detail->grade, 'class' => Auth::user()->users_detail->class], $keyword);
+        } else {
+            $articles = $article->modelSearchArticleSchool(['school_id' => Auth::user()->schools_id, 'grade' => Auth::user()->teachers_detail->grade, 'class' => Auth::user()->teachers_detail->class], $keyword);
+        }
+        return view('search_result_article', ['articles' => $articles]);
+    }
 }

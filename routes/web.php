@@ -118,6 +118,8 @@ Route::middleware(['auth'])->group(function() {
     Route::get('search', function () {
         return view('search');
     })->name('search');
+
+    Route::get('searchResultArticle', [ArticleController::class, 'controllerSearchArticle'])->name('searchResultArticle');
     
     Route::get('messageList', [RoomController::class, 'getRoomList'])->name('messageList');
     
@@ -134,7 +136,9 @@ Route::middleware(['auth'])->group(function() {
     Route::post('/messageDelete', [MessageController::class, 'ControllerMessageDelete']);
     
     // admin
-    Route::get('admin',[SchoolController::class, 'all'])->name('admin');
+    Route::get('admin',[SchoolController::class, 'controllerGetSchool'])->name('admin');
+
+    Route::get('searchResultSchool', [SchoolController::class, 'controllerSearchSchool'])->name('searchSchool');
     
     Route::get('admin/Register', function() {
         return view('admin.adminSchoolRegister');
@@ -146,9 +150,15 @@ Route::middleware(['auth'])->group(function() {
         return view('admin.adminRepresentative');
     });
     
-    Route::post('admin/RepresentativeResult', [UserController::class, 'representative'])->name('representativeRegister');
+    Route::post('admin/representativeResult', [UserController::class, 'representative'])->name('representativeRegister');
 
-    Route::get('admin/SchoolDetail/{id}',[SchoolController::class, 'getDetail'])->name('adminSchoolDetail');
+    Route::get('admin/schoolDetail/{school_id}',[SchoolController::class, 'controllerGetSchoolDetail'])->name('schoolDetail');
+
+    Route::get('admin/schoolUpdateShow/{school_id}', [SchoolController::class, 'controllerUpdateShow'])->name('schoolUpdateShow');
+
+    Route::PATCH('admin/schoolUpdate', [SchoolController::class, 'controllerUpdateSchool'])->name('schoolUpdate');
+
+    route::delete('admin/schoolDelete', [SchoolController::class, ''])->name('schoolDelete');
     
     Route::get('admin/BySchoolUsers/{id}', [UserController::class, 'bySchoolUsers'])->name('adminBySchoolUsers');
 

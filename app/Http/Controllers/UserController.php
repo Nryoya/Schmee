@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
+
     /**
      * ログイン処理
      *
@@ -56,28 +57,6 @@ class UserController extends Controller
             'error' => '*メールアドレスかパスワードが違います。'
         ])->withInput();
     }
-
-    // /**
-    //  * マイページ
-    //  *
-    //  * @param integer $id ユーザーID
-    //  * @return view userDetailに返す
-    //  */
-    // public function getMyDetail($id) {
-    //     if(Auth::user()->role == 0) {
-    //         $myDetail = User::where('users.id', $id)
-    //         ->join('users_detail', 'users.id', '=', 'users_detail.users_id')
-    //         ->select('users.*', 'users_detail.*')
-    //         ->get();
-    //     } else {
-    //         $myDetail = User::where('users.id', $id)
-    //         ->join('teachers_detail', 'users.id', '=', 'teachers_detail.users_id')
-    //         ->select('users.*', 'teachers_detail.*')
-    //         ->get();
-
-    //     }
-    //     return view('mypage', compact('myDetail'));
-    // }
 
     /**
      * マイページ

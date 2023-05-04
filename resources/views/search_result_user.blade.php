@@ -1,7 +1,7 @@
 @extends('layouts.userBackLayout')
 @section('content')
   <section class="users">
-    @if (!$users)
+    @if($users->isEmpty())
       <p class="error">検索結果がありませんでした。</p>
     @endif
     @if (Auth::user()->role == 0)

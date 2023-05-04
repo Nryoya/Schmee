@@ -353,71 +353,55 @@ function multipleDeleteEventListener(type, listener) {
 
 multipleDeleteEventListener("submit", TALK_DELETE);
 
-function searchValidate(keyword) {
-  const SEGMENTER = new Intl.Segmenter("ja", {granularity: "grapheme"});
-  const SEGMENTS = SEGMENTER.segment(keyword);
-  let error = [];
-  if(keyword == "") {
-    error.push("メッセージを入力してください。");
-  }
-  if(!keyword.match(/^[a-zA-Z\u30a0-\u30ff\u3040-\u309f\u3005-\u3006\u30e0-\u9fcf]+$/)) {
-    error.push("不正な文字が入力されています。");
-  }
-  if([...SEGMENTS].length > 250) {
-    error.push("文字数は250文字までです。");
-  }
-  if(!error.length == 0) {
-    alert(error);
-  }
-}
-
 class Search {
-    #SEGMENTER = new Intl.Segmenter("ja", {granularity: "grapheme"});
-    #SEGMENTS;
-    #errors;
+  #SEGMENTER = new Intl.Segmenter("ja", {granularity: "grapheme"});
+  #SEGMENTS;
+  #errors = "";
 
-    /**
-     * 入力値のバリデーション
-     * 
-     * @param {string} keyword 
-     * @returns {boolean} 
-     */
-    validate(keyword) {
-      this.#SEGMENTS = this.#SEGMENTER.segment(keyword);
-      if(keyword == "") {
-        this.#errors += "メッセージを入力してください。\n";
-      }
-      if(!keyword.match(/^[\u30a0-\u30ff\u3040-\u309f\u3005-\u3006\u30e0-\u9fcf]+$/)) {
-        this.#errors += "不正な文字が入力されています。\n";
-      }
-      if([...this.#SEGMENTS].length > 10) {
-        this.#errors += "文字数は10文字までです。\n";
-      }
-      if(!typeof this.#errors == 'undefined') {
-        alert(this.#errors);
-        return false;
-      }
-      return true;
+  /**
+   * 入力値のバリデーション
+   * 
+   * @param {string} keyword 
+   * @returns {boolean} 
+   */
+  validate(keyword) {
+    this.#SEGMENTS = this.#SEGMENTER.segment(keyword);
+    if(keyword == "") {
+      this.#errors += "キーワードを入力してください。\n";
     }
+    if(keyword != "" && !keyword.match(/^[\u30a0-\u30ff\u3040-\u309f\u3005-\u3006\u30e0-\u9fcf]+$/)) {
+      this.#errors += "ひらがな、カタカナ、漢字のみ使用できます。\n";
+    }
+    if([...this.#SEGMENTS].length > 10) {
+      this.#errors += "文字数は10文字までです。\n";
+    }
+    if(this.#errors != "") {
+      alert(this.#errors);
+      this.#errors = "";
+      return false;
+    }
+    return true;
+  }
 
-    /**
-     * イベントリスナー
-     * 
-     * @param {string} type 
-     * @param {element} element 
-     * @returns {element}
-     */
-    setEventlistener(type, element) {
-      element.addEventListener(type, (e) => {
-        if(this.validate(e.target.search.value) == false) {
-          e.preventDefault();
-          e.stopPropagation();
-        };
-      })
-    }
+  /**
+   * イベントリスナー
+   * 
+   * @param {string} type
+   * @param {element} element
+   * @returns {element}
+   */
+  setEventlistener(type, element) {
+    element.addEventListener(type, (e) => {
+      if(this.validate(e.target.search.value) == false) {
+        e.preventDefault();
+        e.stopPropagation();
+      };
+    })
+  }
 }
 
 const ELEMENT_FORM_SEARCH = document.querySelector(".search");
-console.log(ELEMENT_FORM_SEARCH);
-const SEARCH = new Search();
-SEARCH.setEventlistener("submit", ELEMENT_FORM_SEARCH);
+if(ELEMENT_FORM_SEARCH) {
+  const SEARCH = new Search();
+  SEARCH.setEventlistener("submit", ELEMENT_FORM_SEARCH);
+}

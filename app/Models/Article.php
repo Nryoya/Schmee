@@ -28,7 +28,7 @@ class Article extends Model
      * @return BelongsTo
      */
     public function users() {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'users_id');
     }
 
     /**
@@ -64,5 +64,42 @@ class Article extends Model
             ->update([
                 'del_fg' => 1
             ]);
+    }
+
+    /**
+     * 保護者用記事の検索
+     *
+     * @param array $user
+     * @param string $keyword
+     * @return collection
+     */
+    public function modelSearchArticle($user, $keyword) {
+        return $this->query()
+            ->Where(function($query) use ($keyword) {
+                $query->orWhere('title', 'Like', '%'.$keyword.'%')
+                    ->orWhere('body', 'Like', '%'.$keyword.'%')
+                    ->orWhereHas('users', function ($query) use ($keyword) {
+                        $query->where('name', 'Like', '%'.$keyword.'%');
+                    });
+            })
+            ->whereIn('grade', [$user['grade'], 0])
+            ->whereIn('class', [$user['class'], 0])
+            ->where('del_fg', 0)
+            ->where('schools_id', $user['school_id'])
+            ->get();
+    }
+
+    public function modelSearchArticleSchool($user, $keyword) {
+        return $this->query()
+        ->Where(function($query) use ($keyword) {
+            $query->orWhere('title', 'Like', '%'.$keyword.'%')
+                ->orWhere('body', 'Like', '%'.$keyword.'%')
+                ->orWhereHas('users', function ($query) use ($keyword) {
+                    $query->where('name', 'Like', '%'.$keyword.'%');
+                });
+        })
+        ->where('del_fg', 0)
+        ->where('schools_id', $user['school_id'])
+        ->get();
     }
 }

@@ -4,25 +4,85 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\School;
-use App\Models\User;
 
 class SchoolController extends Controller
 {
     // admin
     /**
-     * 学校の一覧表示
+     * 学校取得機能
      *
-     * @return view adminSchoolListsを返す
+     * @param School $school
+     * @return view
      */
-    public function all() {
-        $schools = User::where('users.role', 2)
-            ->join('schools', 'users.schools_id', '=', 'schools.id')
-            ->select('users.name as representative', 'schools.name', 'schools.id')
-            ->orderby('schools.name', 'desc')
-            ->get();
+    public function controllerGetSchool(School $school) {
+        $representatives = $school->modelGetSchool();
 
-        return view('admin.adminSchoolLists', compact('schools'));
+        return view('admin.school_lists', ['representatives' => $representatives]);
     }
+
+    /**
+     * 学校詳細取得機能
+     *
+     * @param School $school
+     * @param integer $school_id
+     * @return view
+     */
+    public function controllerGetSchoolDetail(School $school, $school_id) {
+        $representative = $school->modelGetSchoolDetail($school_id);
+
+        return view('admin.school_detail', ['representative' => $representative]);
+    }
+
+    /**
+     * 学校検索機能
+     *
+     * @param Request $request
+     * @return view
+     */
+    public function controllerSearchSchool(Request $request, School $school) {
+        $keyword = $request->input('search');
+        $schools =$school->modelSearchSchool($keyword);
+
+        return view('admin.search_result_school', ['schools' => $schools]);
+    }
+
+    /**
+     * 学校詳細編集画面表示
+     *
+     * @param School $school
+     * @return view
+     */
+    public function controllerUpdateShow(School $school, $school_id) {
+        $representative = $school->modelGetSchoolDetail($school_id);
+
+        return view('admin.school_update_detail', ['representative' => $representative]);
+    } 
+
+    /**
+     * 学校編集機能
+     *
+     * @param Request $request
+     * @param School $school
+     * @return redirect
+     */
+    public function controllerUpdateSchool(Request $request, School $school) {
+        $credentials = $request->validate([
+            'id' => ['required'],
+            'code' => ['required', 'regex:/^[A-Z]{1}[0-9]{12}$/'],
+            'name' => ['required'],
+            'address' => ['required'],
+            'tel' => ['required', 'digits_between:10,11'],
+        ]);
+        $school->modelUpdateSchool($credentials);
+
+        return redirect(route('SchoolDetail', $request->id));
+    }
+
+    public function controllerDeleteSchool($school_id, School $school) {
+        $school->
+    }
+
+
 
     /**
      * 学校登録
@@ -49,21 +109,5 @@ class SchoolController extends Controller
         $id = school::where('name', $credentials['name'])->get('id');
 
         return view('admin.adminRepresentative', compact('id'));
-    }
-
-    /**
-     * 学校詳細表示
-     *
-     * @param integer $id //代表者
-     * @return view adminSchoolDetailを返す
-     */
-    public function getDetail($id) {
-        // idと一致する学校を取得
-        $detail = User::where('role', 2)
-            ->where('schools_id', $id)
-            ->join('schools', 'users.schools_id', '=', 'schools.id')
-            ->select('schools.*', 'users.name as user', 'users.email')
-            ->get();
-            return view('admin.adminSchoolDetail', compact('detail'));
     }
 }
