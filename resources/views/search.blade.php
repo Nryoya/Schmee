@@ -1,6 +1,6 @@
-@extends('layouts.userBackLayout')
+@extends('layouts.topLayout')
 @section('content')
-<form class="search" action="#" method="POST">
+<form class="search" action="#" method="get">
   <div class="search__wrap">
     <input class="search__input" type="text" name="" placeholder="学校通信検索">
     <button class="search__iconWrap"><i class="fa-solid fa-magnifying-glass search__icon"></i></button>

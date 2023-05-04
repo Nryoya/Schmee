@@ -63,6 +63,7 @@ if(comment) {
     post_data.set("articles_id", document.getElementById("articles_id").value);
     post_data.set("users_id", document.getElementById("users_id").value);
     post_data.set("body", document.getElementById("body").value);
+    
   
     fetch("/articleDetail/comment", {
       method: "POST",
@@ -173,32 +174,250 @@ if(LIKE) {
   }
 }
 
-// メッセージ機能のバリデーション
-const MESSAGE = document.querySelector(".message");
-console.log(MESSAGE);
-if(MESSAGE) {
-  MESSAGE.addEventListener("submit", () => {
-    const BODY = document.querySelector(".message__txt").textContent;
-    const SEGMENTER = new intl.Segmenter("ja", {granularity: "grapheme"});
-    const SEGMENTS = SEGMENTER.segment(BODY);
+/**
+ * 非同期メッセージ機能
+ */
+const MESSAGE_ICON = document.querySelector(".message__icon");
+const TALK_USER_WRAP = document.querySelectorAll(".talk__userWrap");
+const LAST = TALK_USER_WRAP.length;
+if(TALK_USER_WRAP.length != 0) {
+  TALK_USER_WRAP[LAST - 1].scrollIntoView({behavior: "auto", block: "start"});
+}
+if(MESSAGE_ICON) {
+  MESSAGE_ICON.addEventListener("click", () => {
+    const BODY = document.querySelector(".message__txt");
+    const SEGMENTER = new Intl.Segmenter("ja", {granularity: "grapheme"});
+    const SEGMENTS = SEGMENTER.segment(BODY.value);
     let error = [];
-    console.log(BODY);
-    if(BODY == "") {
+    if(BODY.value == "") {
       error.push("メッセージを入力してください。");
     }
-    if(/.*(ばか|あほ|しね).*/.test(BODY)) {
+    if(/.*(ばか|あほ|しね).*.*/.test(BODY.value)) {
       error.push("不適切な文字が含まれています。");
     }
     if([...SEGMENTS].length > 250) {
       error.push("文字数は250文字までです。");
     }
-    if(error) {
-      alert(error.forEach(element => {
-        element;
-      }));
-      return false;
+    if(error.length == 0) {
+      const POST_DATA = new FormData;
+      POST_DATA.set("room_id", document.querySelector(".room_id").value);
+      POST_DATA.set("user_id", document.querySelector(".user_id").value);
+      POST_DATA.set("message", BODY.value);
+      fetch("/send", {
+        method: "POST",
+        headers: {"X-CSRF-TOKEN": token[0].value},
+        body: POST_DATA
+      })
+      .then(response => response.json())
+      .then(res => {
+        const TALK_WRAP = document.querySelector(".talk__wrap");
+        TALK_WRAP.insertAdjacentHTML("beforeend",
+          `<div class="talk__userWrap talk__userWrap--reverse">
+            <div class="talk__body talk__body--reverse">
+              <p class="talk__message talk__message--reverse">${htmlspecialchars(res.message)}</p>
+              <time class="talk__message-time">${res.created_at}</time>
+            </div>
+            <form class="talk__delete" method="POST">
+              <input type="hidden" name="_token" value="${token[0].value}">
+              <input type="hidden" name="id" value="${res.id}">
+              <button class="talk__delete-btn"><i class="fa-solid fa-trash-can talk__delete-icon"></i></button>
+            </form>
+          </div>`
+        );
+        BODY.value = "";
+        const TALK_USER_WRAP = document.querySelectorAll(".talk__userWrap");
+        const LAST = TALK_USER_WRAP.length;
+        TALK_USER_WRAP[LAST - 1].scrollIntoView({behavior: "smooth", block: "start"});
+        "mousedown touchstart".split(" ").forEach((eventName) => { 
+          TALK_USER_WRAP[LAST - 1].children[0].children[0].addEventListener(`${eventName}`, (e) => {
+            e.preventDefault();
+            timer = setTimeout(function() {
+              e.target.closest(".talk__userWrap").lastElementChild.classList.add("active");
+            }, BUTTON_TAP_TIME);
+          })
+        })
+        "mouseup touchend".split(" ").forEach((eventName) => {
+          TALK_USER_WRAP[LAST - 1].children[0].children[0].addEventListener(`${eventName}`, (e) => {
+            clearTimeout(timer);
+          }); 
+        })
+        const TALK_DELETE = document.querySelectorAll(".talk__delete");
+        document.addEventListener("click", (e) => {
+          if(!e.target.closest(".talk__delete")) {
+            for(let i = 0; i < TALK_DELETE.length; i++) {
+              TALK_DELETE[i].classList.remove("active");
+            }
+          };
+        });
+        multipleDeleteEventListener("submit", TALK_DELETE);
+      })
+      .catch(error => console.error(error));
     } else {
-
+      alert(error);
     }
   })
 }
+
+/**
+ * メッセージ削除機能
+ */
+// クリック長押しで削除を表示
+const TALK_MESSAGE = document.querySelectorAll(".talk__message");
+const BUTTON_TAP_TIME = 1000;
+let timer;
+for(let i = 0; i < TALK_MESSAGE.length; i++) {
+  "mousedown touchstart".split(" ").forEach((eventName) => {
+    TALK_MESSAGE[i].addEventListener(`${eventName}`, (e) => {
+      e.preventDefault();
+      timer = setTimeout(function() {
+        e.target.closest(".talk__userWrap").lastElementChild.classList.add("active");
+      }, BUTTON_TAP_TIME);
+    });
+    "mouseup touchend".split(" ").forEach((eventName) => {
+      TALK_MESSAGE[i].addEventListener(`${eventName}`, (e) => {
+        clearTimeout(timer);
+      }); 
+    })
+  });
+}
+
+// 削除以外を押した時の処理
+const TALK_DELETE = document.querySelectorAll(".talk__delete");
+document.addEventListener("click", (e) => {
+  if(!e.target.closest(".talk__delete")) {
+    for(let i = 0; i < TALK_DELETE.length; i++) {
+      TALK_DELETE[i].classList.remove("active");
+    }
+  };
+});
+
+/**
+ * フォームデータの作成
+ * 
+ * @param {Element} element 
+ * @returns {object} DATA
+ */
+function createDeleteFormData(element) {
+  const DATA = new FormData;
+  DATA.set("id", element.id.value);
+  return DATA;
+}
+
+/**
+ * 非同期通信
+ * 
+ * @param {string} url 
+ * @param {object} param1 
+ */
+function asynchronous(url, {data, token}) {
+  fetch(url, {
+    method: "POST",
+    headers: {"X-CSRF-TOKEN": token},
+    body: data
+  })
+  .then(response => response.json())
+  .then(res => {
+    return res;
+  })
+  .catch(error => console.error(error));
+}
+
+/**
+ * 削除した要素を隠す
+ * 
+ * @param {Element} element 
+ */
+function displayNone(element) {
+  console.log(element);
+  element.style.display = "none";
+}
+
+/**
+ *メッセージの削除
+ * 
+ * @param {string} type 
+ * @param {Array} listener 
+ */
+function multipleDeleteEventListener(type, listener) {
+  for(let i = 0; i < listener.length; i++) {
+    listener[i].addEventListener(type, (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const POST_DATA = createDeleteFormData(e.target);
+      const URL = "/messageDelete";
+      asynchronous(URL,{data: POST_DATA, token: e.target._token.value});
+      displayNone(e.target.closest(".talk__userWrap"));
+    })
+  }
+}
+
+multipleDeleteEventListener("submit", TALK_DELETE);
+
+function searchValidate(keyword) {
+  const SEGMENTER = new Intl.Segmenter("ja", {granularity: "grapheme"});
+  const SEGMENTS = SEGMENTER.segment(keyword);
+  let error = [];
+  if(keyword == "") {
+    error.push("メッセージを入力してください。");
+  }
+  if(!keyword.match(/^[a-zA-Z\u30a0-\u30ff\u3040-\u309f\u3005-\u3006\u30e0-\u9fcf]+$/)) {
+    error.push("不正な文字が入力されています。");
+  }
+  if([...SEGMENTS].length > 250) {
+    error.push("文字数は250文字までです。");
+  }
+  if(!error.length == 0) {
+    alert(error);
+  }
+}
+
+class Search {
+    #SEGMENTER = new Intl.Segmenter("ja", {granularity: "grapheme"});
+    #SEGMENTS;
+    #errors;
+
+    /**
+     * 入力値のバリデーション
+     * 
+     * @param {string} keyword 
+     * @returns {boolean} 
+     */
+    validate(keyword) {
+      this.#SEGMENTS = this.#SEGMENTER.segment(keyword);
+      if(keyword == "") {
+        this.#errors += "メッセージを入力してください。\n";
+      }
+      if(!keyword.match(/^[\u30a0-\u30ff\u3040-\u309f\u3005-\u3006\u30e0-\u9fcf]+$/)) {
+        this.#errors += "不正な文字が入力されています。\n";
+      }
+      if([...this.#SEGMENTS].length > 10) {
+        this.#errors += "文字数は10文字までです。\n";
+      }
+      if(!typeof this.#errors == 'undefined') {
+        alert(this.#errors);
+        return false;
+      }
+      return true;
+    }
+
+    /**
+     * イベントリスナー
+     * 
+     * @param {string} type 
+     * @param {element} element 
+     * @returns {element}
+     */
+    setEventlistener(type, element) {
+      element.addEventListener(type, (e) => {
+        if(this.validate(e.target.search.value) == false) {
+          e.preventDefault();
+          e.stopPropagation();
+        };
+      })
+    }
+}
+
+const ELEMENT_FORM_SEARCH = document.querySelector(".search");
+console.log(ELEMENT_FORM_SEARCH);
+const SEARCH = new Search();
+SEARCH.setEventlistener("submit", ELEMENT_FORM_SEARCH);

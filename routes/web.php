@@ -107,7 +107,9 @@ Route::middleware(['auth'])->group(function() {
 
     Route::post('post', [ArticleController::class, 'post'])->name('postCreate');
     
-    Route::get('users', [UserController::class, 'getAllUser'])->name('users');
+    Route::get('users', [UserController::class, 'ControllerGetAllUser'])->name('users');
+
+    Route::get('searchResultUser', [UserController::class, 'controllerSearchUser'])->name('search_result_user');
     
     Route::get('userDetail/{id}', [UserController::class, 'getFindUser'])->name('user');
 
@@ -126,6 +128,10 @@ Route::middleware(['auth'])->group(function() {
     Route::get('message/{room_id}/{user_id}', [MessageController::class, 'inRoom'])->name('inRoom');
 
     Route::get('room/{id}/{name}', [RoomController::class, 'createRoom'])->name('room');
+
+    Route::post('/send', [MessageController::class, 'ControllerInsert']);
+
+    Route::post('/messageDelete', [MessageController::class, 'ControllerMessageDelete']);
     
     // admin
     Route::get('admin',[SchoolController::class, 'all'])->name('admin');

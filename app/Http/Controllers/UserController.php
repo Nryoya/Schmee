@@ -450,10 +450,22 @@ class UserController extends Controller
      *
      * @return view
      */
-    public function getAllUser() {
-        $users = User::where('schools_id', Auth::user()->schools_id)
-            ->get();
+    public function ControllerGetAllUser(User $user) {
+        $users = $user->modelGetAllUser(Auth::user()->schools_id);
         return view('users', compact('users'));
+    }
+
+    /**
+     *  usersテーブルから検索結果を取得
+     *
+     * @param Request $request
+     * @param User $user
+     * @return view usersRe
+     */
+    public function controllerSearchUser(Request $request, User $user) {
+        $keyword = $request->input('search');
+        $users = $user->modelSearchUser(['role' => Auth::user()->role, 'school_id' => Auth::user()->schools_id, 'keyword' => $keyword]);
+        return view('search_result_user',compact('users'));
     }
 
     /**

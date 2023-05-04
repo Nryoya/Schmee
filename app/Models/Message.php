@@ -43,6 +43,32 @@ class Message extends Model
      * @return void
      */
     public function getMessage($id) {
-        return $result = $this->where('rooms_id', $id)->get();
+        return $result = $this->where('rooms_id', $id)->where('del_fg', 0)->get();
+    }
+
+    /**
+     * メッセージの挿入
+     *
+     * @param integer $room_id
+     * @param integer $user_id
+     * @param string $message
+     * @param integer $del_fg
+     * @return collection $message
+     */
+    public function modelInsert($room_id, $user_id, $body, $del_fg) {
+        $message = $this->create([
+            'rooms_id' => $room_id,
+            'users_id' => $user_id,
+            'message' => $body,
+            'del_fg' => $del_fg,
+        ]);
+        return $message;
+    }
+
+    public function modelMessageDelete($id) {
+        $target = $this->where('id', $id)->update([
+            'del_fg' => 1
+        ]);
+        return $target;
     }
 }

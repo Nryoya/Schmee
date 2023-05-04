@@ -24,4 +24,36 @@ class MessageController extends Controller
 
         return view('chat.message', ['result' => $result, 'room_id' => $room_id, 'person' => $person]);
     }
+
+    /**
+     * メッセージの挿入
+     *
+     * @param Request $request
+     * @param Message $message
+     * @return json $json
+     */
+    public function ControllerInsert(Request $request, Message $message) {
+        $result = $message->modelInsert($request->room_id, $request->user_id, $request->message, 0);
+            $json = [
+                'id' => $result->id,
+                'rooms_id' => $result->rooms_id,
+                'users_id' => $result->users_id,
+                'message' => $result->message,
+                'created_at' => $result->created_at->format('Y-m-d H:i:s'),
+            ];
+        header('Content-type:application/json');
+        return json_encode($json);
+    }
+
+    /**
+     * メッセージを論理削除
+     *
+     * @param Request $request
+     * @param Message $message
+     * @return void
+     */
+    public function controllerMessageDelete(Request $request, Message $message) {
+        $result = $message->modelMessageDelete($request->id);
+        return json_encode($result);
+    }
 }

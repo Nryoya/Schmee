@@ -4,5 +4,5 @@
       <p class="talk-header__name">{{ $person->name }}</p>
     </div>
   </section>
-  <a class="header__back" href="#" onclick="history.back()"><i class="fa-solid fa-chevron-left header__back-icon"></i></a>
+  <a class="header__back" href="{{ route('messageList') }}"><i class="fa-solid fa-chevron-left header__back-icon"></i></a>
 </header>

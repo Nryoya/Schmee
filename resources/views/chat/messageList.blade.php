@@ -1,4 +1,4 @@
-@extends('layouts.userBackLayout')
+@extends('layouts.topLayout')
 @section('content')
   <section class="messageList">
     {{-- @if (!Auth::user()->role == 0)

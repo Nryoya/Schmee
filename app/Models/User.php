@@ -94,6 +94,33 @@ class User extends Authenticatable
     }
 
     /**
+     * 同じ学校のユーザーを取得
+     *
+     * @param integer $school_id
+     * @return collection
+     */
+    public function modelGetAllUser($school_id) {
+        $users = $this->query()
+            ->where('schools_id', $school_id)->get();
+        return $users;
+    }
+
+    /**
+     * 同じ学校且つキーワードに一致するユーザーを取得
+     *
+     * @param array $searchArray
+     * @return collection $users
+     */
+    public function modelSearchUser($searchArray) {
+        $users = $this->query()
+            ->whereNot('role', $searchArray['role'])
+            ->where('schools_id', $searchArray['school_id'])
+            ->where('name', 'Like', '%'.$searchArray['keyword'].'%')
+            ->get();
+        return $users;
+    }
+
+    /**
      * 保護者編集用の詳細取得
      *
      * @param integer $id

@@ -494,6 +494,7 @@ body {
 	width: 100%;
 	position: fixed;
 	top: 0;
+	z-index: 1;
 }
 
 .header__logo {
@@ -936,13 +937,12 @@ body {
 
 .talk__userWrap {
 	display: flex;
-	margin-bottom: 30px;
+	margin-bottom: 20px;
+	position: relative;
 }
 
 .talk__userWrap--reverse {
-	display: flex;
 	flex-direction: row-reverse;
-	margin-bottom: 30px;
 }
 
 .talk__user-img {
@@ -959,9 +959,8 @@ body {
 }
 
 .talk__body--reverse {
-	display: flex;
-	flex-direction: column;
 	align-items: flex-end;
+	margin-left: 0;
 	margin-right: 15px;
 }
 
@@ -978,12 +977,39 @@ body {
 	min-width: fit-content;
 }
 
-.talk__message--reverse {
+.talk__delete {
+	position: absolute;
+	top: -45px;
+	right: 15px;
 	border-radius: 5px;
-	border: #435875 1px solid;
-	padding: 5px;
-	width: calc(100% - 45px);
-	min-width: fit-content;
+	opacity: 0;
+	visibility: hidden;
+	transition: .6s;
+}
+
+.talk__delete.active  {
+	opacity: 1;
+	visibility: visible;
+}
+
+.talk__delete-btn {
+	display: inline-block;
+	background-color: #435875;
+	border-radius: 5px;
+	border: none;
+	padding: 15px;
+}
+
+.talk__delete-icon {
+	color: #f7f7f7;
+	font-size: 1.7rem;
+}
+
+.talk__message-time {
+	font-size: 10px;
+	display: block;
+	transform: scale(0.8);
+	transform-origin: right;
 }
 
 /* message block */
