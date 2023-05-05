@@ -6,8 +6,9 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Models\TeacherDetail;
 
-class Teacher_detail extends Seeder
+class Teacher_detailSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -15,14 +16,6 @@ class Teacher_detail extends Seeder
     public function run(): void
     {
         //
-        DB::table('Teachers_detail')->insert([
-            'users_id' => 3,
-            'jobs' => '担任',
-            'introduction' => 'ソクラテスの弟子です。',
-            'grade' => 3,
-            'class' => 1,
-            'created_at' => Carbon::now(),
-            'updated_at' => Carbon::now(),
-        ]);
+        TeacherDetail::factory()->create();
     }
 }
