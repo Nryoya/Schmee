@@ -87,9 +87,9 @@ class UserController extends Controller
      * 代表者登録
      *
      * @param Request $request
-     * @return redirect adminにリダイレクト
+     * @return view
      */
-    public function representative(Request $request) {
+    public function representative(Request $request, User $user) {
         // バリデーション
         $credentials = $request->validate([
             'name' => ['required'],
@@ -97,14 +97,26 @@ class UserController extends Controller
             'password' => ['required'],
             'schools_id' => [],
         ]);
-        // データの挿入
-        User::create([
-            'name' => $credentials['name'],
-            'email' => $credentials['email'],
-            'password' => Hash::make($credentials['password']),
-            'schools_id' => $credentials['schools_id'],
-            'role' => 2,
+        $user_data = $user->modelRepresentativeInsert($credentials);
+
+        return view('admin.user_detail_register', ['user_data' => $user_data]);
+    }
+
+    /**
+     * 代表者詳細登録機能
+     *
+     * @param Request $request
+     * @param TeacherDetail $teacher_detail
+     * @return redirect
+     */
+    public function representativeDetail(Request $request, TeacherDetail $teacher_detail) {
+        // バリデーション
+        $credentials = $request->validate([
+            'id' => ['required'],
+            'jobs' => ['required'],
+            'introduction' => ['required', 'max:250'],
         ]);
+        $teacher_detail->modelRepresentativeDetail($credentials);
 
         return redirect('admin');
     }

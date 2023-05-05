@@ -83,7 +83,7 @@ Route::middleware(['auth'])->group(function() {
         return view('firstRegisterTeacher');
     });
 
-    // Route::post('teacherDetail', [UserController::class, 'teacherDetail'])->name('teacherDetail');
+    Route::post('teacherDetail', [UserController::class, 'teacherDetail'])->name('teacherDetailFirstRegister');
     
     Route::get('mypage/{id}', [UserController::class, 'getMyDetail'])->name('mypage');
     
@@ -135,22 +135,40 @@ Route::middleware(['auth'])->group(function() {
 
     Route::post('/messageDelete', [MessageController::class, 'ControllerMessageDelete']);
     
-    // admin
+    /**
+     * admin
+     */
+    /**
+     * admin画面の表示
+     */
     Route::get('admin',[SchoolController::class, 'controllerGetSchool'])->name('admin');
 
+    /**
+     * 学校検索機能
+     */
     Route::get('searchResultSchool', [SchoolController::class, 'controllerSearchSchool'])->name('searchSchool');
     
-    Route::get('admin/Register', function() {
+    /**
+     * 登録画面の表示
+     */
+    Route::get('admin/schoolRegister', function() {
         return view('admin.adminSchoolRegister');
     })->name('adminRegister');
 
+    /**
+     * 学校登録機能
+     */
     Route::post('admin/RegisterResult', [SchoolController::class, 'create'])->name('schoolRegister');
     
-    Route::get('admin/Representative', function () {
-        return view('admin.adminRepresentative');
-    });
-    
+    /**
+     * 学校代表者登録機能
+     */
     Route::post('admin/representativeResult', [UserController::class, 'representative'])->name('representativeRegister');
+
+    /**
+     * 学校代表者詳細登録機能
+     */
+    Route::post('admin/representativeDetail', [UserController::class, 'representativeDetail'])->name('representativeDetail');
 
     Route::get('admin/schoolDetail/{school_id}',[SchoolController::class, 'controllerGetSchoolDetail'])->name('schoolDetail');
 
@@ -158,7 +176,7 @@ Route::middleware(['auth'])->group(function() {
 
     Route::PATCH('admin/schoolUpdate', [SchoolController::class, 'controllerUpdateSchool'])->name('schoolUpdate');
 
-    route::delete('admin/schoolDelete', [SchoolController::class, ''])->name('schoolDelete');
+    route::get('admin/schoolDelete/{school_id}', [SchoolController::class, 'controllerDeleteSchool'])->name('schoolDelete');
     
     Route::get('admin/BySchoolUsers/{id}', [UserController::class, 'bySchoolUsers'])->name('adminBySchoolUsers');
 

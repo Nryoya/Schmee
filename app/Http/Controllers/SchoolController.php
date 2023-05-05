@@ -75,14 +75,21 @@ class SchoolController extends Controller
         ]);
         $school->modelUpdateSchool($credentials);
 
-        return redirect(route('SchoolDetail', $request->id));
+        return redirect(route('schoolDetail', $request->id));
     }
 
+    /**
+     * 
+     *
+     * @param [type] $school_id
+     * @param School $school
+     * @return void
+     */
     public function controllerDeleteSchool($school_id, School $school) {
-        $school->
+        $school->modelDeleteSchool($school_id);
+
+        redirect(route('admin'));
     }
-
-
 
     /**
      * 学校登録

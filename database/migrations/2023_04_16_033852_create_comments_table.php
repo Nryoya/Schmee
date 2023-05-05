@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id()->comment('コメントID');
-            $table->foreignId('articles_id')->comment('学校通信ID')->constrained();
-            $table->foreignId('users_id')->comment('ユーザーID')->constrained();
+            $table->foreignId('articles_id')->comment('学校通信ID')->constrained()->cascadeOnDelete();
+            $table->foreignId('users_id')->comment('ユーザーID')->constrained()->cascadeOnDelete();
             $table->string('body')->comment('コメント本文');
             $table->integer('del_fg')->comment('0:表示 1:非表示');
             $table->timestamps();

@@ -13,16 +13,15 @@ return new class extends Migration
     {
         Schema::create('users_detail', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('users_id')->comment('ユーザーID')->constrained();
+            $table->foreignId('users_id')->comment('ユーザーID')->constrained()->cascadeOnDelete();
             $table->integer('grade')->default(0)->comment('学年');
             $table->integer('class')->default(0)->comment('クラス');
             $table->string('onething', 50)->comment('ひとこと');
-            $table->string('imgName')->comment('画像の名前');
-            $table->string('imgPath')->comment('画像のパス');
-            $table->string('tel')->comment('電話番号');
+            $table->string('imgPath')->default('img/user.qng')->comment('画像のパス');
+            $table->string('tel', 11)->comment('電話番号');
             $table->string('address', 50)->comment('住所');
-            $table->string('emergency')->comment('緊急連絡先');
-            $table->string('relationship')->comment('続柄');
+            $table->string('emergency', 11)->comment('緊急連絡先');
+            $table->string('relationship', 10)->comment('続柄');
             $table->timestamps();
         });
     }

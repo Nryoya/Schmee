@@ -1,17 +1,27 @@
 "use strict";
 
-$(function() {
-  // input file
-  // クリックしたときにinputを発生させる。
-  $(".file__btn").on("click", function() {
-    $(".file__input").click();
-  })
-  // ファイルの値が変わった時にその値に変更する
-  $(".file__input").on("change", function() {
-    let val = $(this).prop("files")[0].name;
-    $(".file__btn").text(val);
-  })
-})
+const ELEMENT_FILE_BTN = document.querySelector(".file__btn");
+const ELEMENT_FILE_INPUT = document.querySelector(".file__input");
+
+/**
+ * 要素をクリックしたときinputをクリックしたとする
+ */
+const fileInputClick = () => {
+  ELEMENT_FILE_INPUT.click();
+}
+
+/**
+ * inputのvalueが変わった時に別の要素のテキストを変更する
+ */
+const changeFileName = () => {
+  let file_name = ELEMENT_FILE_INPUT.value;
+  ELEMENT_FILE_BTN.textContent = file_name;
+}
+
+if(ELEMENT_FILE_BTN) {
+  ELEMENT_FILE_BTN.addEventListener("click", fileInputClick);
+  ELEMENT_FILE_INPUT.addEventListener("change", changeFileName);
+}
 
 // articleDetail.blade.php
 // メニューの開閉

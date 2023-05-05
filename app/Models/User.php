@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\CanResetPassword;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -93,6 +94,17 @@ class User extends Authenticatable
      */
     public function messages() {
         return $this->hasMany(Message::class, 'users_id');
+    }
+
+    public function modelRepresentativeInsert($user_data) {
+        $user = User::create([
+            'name' => $user_data['name'],
+            'email' => $user_data['email'],
+            'password' => Hash::make($user_data['password']),
+            'schools_id' => $user_data['schools_id'],
+            'role' => 2,
+        ]);
+        return $user;
     }
 
     /**

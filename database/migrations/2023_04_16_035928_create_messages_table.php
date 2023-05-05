@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id()->comment('メッセージID');
-            $table->foreignId('rooms_id')->comment('ルームID')->constrained();
-            $table->foreignId('users_id')->comment('ユーザーID')->constrained();
+            $table->foreignId('rooms_id')->comment('ルームID')->constrained()->cascadeOnDelete();
+            $table->foreignId('users_id')->comment('ユーザーID')->constrained()->cascadeOnDelete();
             $table->string('message')->comment('メッセージ本文');
             $table->integer('del_fg')->comment('論理削除');
             $table->timestamps();

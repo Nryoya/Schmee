@@ -81,4 +81,10 @@ class School extends Model
                 'tel' => $data['tel'],
             ]);
     }
+
+    public function modelDeleteSchool($school_id) {
+        $school = $this->query()
+            ->where('id', $school_id)
+            ->first();
+    }
 }

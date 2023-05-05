@@ -8,7 +8,7 @@
           <i class="fa-solid fa-ellipsis menu__btn"></i>
           <div class="menu__links">
             <a class="menu__link" href="{{ route('schoolUpdateShow', $representative->schools->id) }}">学校編集</a>
-            <a class="menu__link" href="{{ route('schoolDelete') }}">削除</a>
+            <a class="menu__link" href="{{ route('schoolDelete', $representative->schools->id) }}">削除</a>
           </div>
         </div>
       </div>
