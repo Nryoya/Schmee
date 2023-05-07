@@ -1,22 +1,18 @@
 @extends('layouts.backLayout')
 @section('content')
-  <form class="search" action="{{ route('adminSearchArticle') }}" method="GET">
-    <div class="search__wrap">
-      <input type="hidden" name="school_id" value="{{ $articles[0]->schools_id }}">
-      <input class="search__input" type="text" name="search" placeholder="学校通信検索">
-      <button class="search__iconWrap"><i class="fa-solid fa-magnifying-glass search__icon"></i></button>
-    </div>
-  </form>
-  <section class="articles">
-      @foreach ($articles as $article)
+<section class="articles">
+  @if ($articles->isEmpty())
+    <p class="error">検索結果がありませんでした。</p>
+  @endif
+  @foreach ($articles as $article)
       <article class="article">
         <div class="article__wrap">
           <div class="article__user">
-            <a class="article__user-link" href="{{ route('adminTeacherDetail', $article->users_id) }}"><img class="article__user-img" src="{{ Storage::url($article->imgPath) }}" alt=""></a>
+            <a class="article__user-link" href="{{ route('adminTeacherDetail', $article->users_id) }}"><img class="article__user-img" src="{{ Storage::url($article->users->teachers_detail->imgPath) }}" alt=""></a>
           </div>
           <a class="article__link" href="{{ route('adminArticleDetail', $article->id) }}">
             <div class="article__head">
-              <p>{{ $article->name }}</p>
+              <p>{{ $article->users->name }}</p>
               <time class="article__head-time">{{ $article->created_at }}</time>
             </div>
             <div class="article__body">

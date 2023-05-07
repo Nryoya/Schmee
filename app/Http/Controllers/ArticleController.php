@@ -29,24 +29,6 @@ class ArticleController extends Controller
         return view('admin.adminByArticles', compact('articles'));
     }
 
-    /**
-     * 学校通信詳細
-     *
-     * @param integer $id 学校通信ID
-     * @return view adminArticleDetailを返す
-     */
-    public function adminArticleDetail($id) {
-        $detail = Article::where('articles.id', $id)
-        ->join('teachers_detail', 'articles.users_id', '=', 'teachers_detail.users_id')
-        ->join('users', 'articles.users_id', '=', 'users.id')
-        ->select('articles.*', 'teachers_detail.imgPath', 'users.name')
-        ->orderby('articles.created_at', 'desc')
-        ->get();
-
-        
-
-        return view('admin.adminArticleDetail', compact('detail'));
-    }
 
     // 保護者、関係者
     /**
@@ -148,9 +130,6 @@ class ArticleController extends Controller
      * @return void
      */
     public function getAllArticle(Article $article) {
-        // $articles = Article::where('schools_id', Auth::user()->schools_id)
-        //     ->orderBy('created_at', 'desc')
-        //     ->get();
         if(Auth::user()->role == 0) {
             $articles = $article->modelShowArticle(['school_id' => Auth::user()->schools_id, 'grade' => Auth::user()->users_detail->grade, 'class' => Auth::user()->users_detail->class]);
         } else {
@@ -199,5 +178,35 @@ class ArticleController extends Controller
             $articles = $article->modelSearchArticleSchool(['school_id' => Auth::user()->schools_id, 'grade' => Auth::user()->teachers_detail->grade, 'class' => Auth::user()->teachers_detail->class], $keyword);
         }
         return view('search_result_article', ['articles' => $articles]);
+    }
+
+    /**
+     * admin
+     */
+    /**
+     * 記事の検索機能
+     *
+     * @param Request $request
+     * @param Article $article
+     * @return void
+     */
+    public function controllerAdminSearchArticle(Request $request, Article $article) {
+        $keyword = $request->input('search');
+        $school_id = $request->school_id;
+        $articles = $article->modelAdminSearchArticle($school_id, $keyword);
+
+        return view('admin.search_result_article', ['articles' => $articles]);
+    }
+
+    /**
+     * 学校通信詳細
+     *
+     * @param integer $id 学校通信ID
+     * @return view adminArticleDetailを返す
+     */
+    public function adminArticleDetail($article_id, Article $article) {
+        $article_detail = $article->modelShowArticleDetail($article_id);
+
+        return view('admin.adminArticleDetail', ['article' => $article_detail]);
     }
 }
