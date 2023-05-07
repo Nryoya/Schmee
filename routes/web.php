@@ -180,8 +180,15 @@ Route::middleware(['auth'])->group(function() {
     
     Route::get('admin/BySchoolUsers/{id}', [UserController::class, 'bySchoolUsers'])->name('adminBySchoolUsers');
 
+    Route::get('admin/searchResultUser', [UserController::class, 'controllerAdminSearchUser'])->name('adminSearchUser');
+
     Route::get('admin/TeacherDetail/{id}', [UserController::class, 'teacherDetailAll'])->name('adminTeacherDetail');
     Route::get('admin/UserDetail/{id}', [UserController::class, 'userDetailAll'])->name('adminUserDetail');
+
+    /**
+     * ユーザーの削除
+     */
+    Route::post('admin/userDelete', [UserController::class, 'controllerUserDelete'])->name('userDelete');
     
     Route::get('admin/ByArticles/{id}', [ArticleController::class, 'bySchoolArticles'])->name('adminByArticles');
     

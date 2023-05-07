@@ -137,7 +137,7 @@ class UserController extends Controller
         ->join('teachers_detail', 'users.id', '=', 'teachers_detail.users_id')
         ->select('users.id','teachers_detail.imgPath', 'teachers_detail.jobs', 'users.name')
         ->get();
-        return view('admin.adminBySchoolUsers', compact('users', 'teachers'));
+        return view('admin.adminBySchoolUsers', compact('users', 'teachers', 'id'));
     }
 
     /**
@@ -168,6 +168,34 @@ class UserController extends Controller
         ->get();
 
     return view('admin.adminTeacherDetail', compact('teacher_detail'));
+    }
+
+    /**
+     *  usersテーブルから検索結果を取得
+     *
+     * @param Request $request
+     * @param User $user
+     * @return view usersRe
+     */
+    public function controllerAdminSearchUser(Request $request, User $user) {
+        $keyword = $request->input('search');
+        $school_id = $request->input('school_id');
+        $users = $user->modelAdminSearchUser(['school_id' => $school_id, 'keyword' => $keyword]);
+        
+        return view('admin.search_result_user', ['users' => $users]);
+    }
+    
+    /**
+     * ユーザーの削除機能
+     *
+     * @param Request $request
+     * @param User $user
+     * @return redirect
+     */
+    public function controllerUserDelete(Request $request, User $user) {
+        $result = $user->modelUserDelete($request->user_id);
+
+        return redirect(route('adminBySchoolUsers', $result->schools_id));
     }
     
     // 保護者新規登録
@@ -405,37 +433,6 @@ class UserController extends Controller
         }
     }
 
-    // /**
-    //  * 保護者詳細取得
-    //  *
-    //  * @param integer $id ユーザーID
-    //  * @return view //userDetailに返す
-    //  */
-    // public function getUserDetail($id) {
-    //     $user_detail = User::where('users.id', $id)
-    //         ->join('users_detail', 'users.id', '=', 'users_detail.users_id')
-    //         ->select('users.*', 'users_detail.*')
-    //         ->get();
-
-    //     return view('userDetail', compact('user_detail'));
-    // }
-
-    // /**
-    //  * 関係者詳細取得
-    //  *
-    //  * @param integer $id ユーザーID
-    //  * @return view teacherDetailに返す
-    //  */ 
-    // public function getTeacherDetail($id) {
-    //     $teacher_detail = User::where('users.id', $id)
-    //     ->join('teachers_detail', 'users.id', '=', 'teachers_detail.users_id')
-    //     ->select('users.*', 'teachers_detail.*')
-    //     ->get();
-
-    // return view('teacherDetail', compact('teacher_detail'));
-    // }
-
-
     /**
      * usersテーブルから同じ学校のデータを取得
      *
@@ -458,6 +455,7 @@ class UserController extends Controller
         $users = $user->modelSearchUser(['role' => Auth::user()->role, 'school_id' => Auth::user()->schools_id, 'keyword' => $keyword]);
         return view('search_result_user',compact('users'));
     }
+
 
     /**
      * usersテーブルから$idと一致するデータを取得
