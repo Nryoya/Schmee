@@ -1,6 +1,6 @@
 @extends('layouts.userBackLayout')
 @section('content')
-  <form class="form form-margin-big" action="{{ route('postCreate') }}" method="post" enctype="multipart/form-data">
+  <form class="form form-margin-big" action="{{ route('postCreate') }}" method="POST" enctype="multipart/form-data">
     @csrf
     <h2 class="from__headline">学校通信投稿</h2>
     @error('ttl')
@@ -8,7 +8,7 @@
     @enderror
     <input class="input input--blue" type="text" name="ttl" placeholder="タイトル" value="{{ old('ttl') }}">
     <div class="file">
-      <input class="file__input" type="file" name="imgPath">
+      <input class="file__input" type="file" name="img">
       <p class="file__btn">画像</p>
     </div>
     @error('body')

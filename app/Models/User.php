@@ -24,6 +24,8 @@ class User extends Authenticatable
         'role',
     ];
 
+
+
     /**
      * schoolsテーブルへのリレーション
      *
@@ -269,5 +271,42 @@ class User extends Authenticatable
      */
     public function getUser($id) {
         return $this->find($id);
+    }
+
+    /**
+     * admin
+     */
+
+    /**
+     * 同じ学校且つキーワードに一致するユーザーを取得
+     *
+     * @param array $searchArray
+     * @return collection $users
+     */
+    public function modelAdminSearchUser($searchArray) {
+        $users = $this->query()
+            ->where('schools_id', $searchArray['school_id'])
+            ->where('name', 'Like', '%'.$searchArray['keyword'].'%')
+            ->get();
+        return $users;
+    }
+
+    /**
+     * ユーザーの削除
+     *
+     * @param integer $user_id
+     * @return void
+     */
+    public function modelUserDelete($user_id) {
+        $school_id = $this->query()
+            ->where('id', $user_id)
+            ->select('schools_id')
+            ->first();
+
+        $this->query()
+            ->where('id', $user_id)
+            ->delete();
+
+        return $school_id;
     }
 }
