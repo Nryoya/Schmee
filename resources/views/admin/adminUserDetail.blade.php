@@ -3,9 +3,13 @@
   <section class="user">
     <div class="user__head">
       <div class="user__head-imgWrap">
-        <img class="user__head-img" src="{{ Storage::url($user_detail[0]->imgPath) }}" alt="">
+        <img class="user__head-img" src="{{ Storage::url($user_detail[0]->imgPath) }}">
       </div>
-      <a class="user__head-delete" href="#">削除</a>
+      <form class="user__head-delete" id="userDelete" action="{{ route('userDelete') }}" method="POST">
+        @csrf
+        <input type="hidden" name="user_id" value="{{ $user_detail[0]->users_id }}">
+        <button class="user__head-delete-btn" id="btn">削除</button>
+      </form>
     </div>
     <div class="user__detail">
       <div class="user__detail-head">

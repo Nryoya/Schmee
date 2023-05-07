@@ -3,7 +3,6 @@
 <section class="articles articles-margin">
   @if (Auth::user()->role == 0)
     @foreach ($articles as $article)
-      @if (Auth::user()->users_detail->grade == $article->grade or 0 && Auth::user()->users_detail->class == $article->class or 0 && $article->del_fg == 0)
         <article class="article">
           <div class="article__wrap">
             <div class="article__user">
@@ -46,11 +45,9 @@
             </div>
           </div>
         </article>
-      @endif
     @endforeach 
   @else
   @foreach ($articles as $article)
-    @if ($article->del_fg == 0)
       <article class="article">
         <div class="article__wrap">
           <div class="article__user">
@@ -99,7 +96,6 @@
           </div>
         </div>
       </article>
-    @endif
   @endforeach 
   @endif
 </section>

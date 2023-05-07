@@ -363,10 +363,11 @@ body {
 	object-fit: cover;
 }
 
-.user__head-delete {
+.user__head-delete-btn {
 	background-color: #fe5f55;
 	color: #f7f7f7;
 	border-radius: 5px;
+	border: 0;
 	font-weight: bold;
 	padding: 3px 10px;
 }

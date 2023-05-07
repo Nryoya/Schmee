@@ -114,8 +114,8 @@ class ArticleController extends Controller
         ]);
 
         // imgの取得
-        $img = $request->file('imgPath');
-
+        $img = $request->file('img');
+        
         // imgに値が入っていれば
         if(isset($img)) {
             $path = $img->store('img', 'public');
@@ -147,10 +147,15 @@ class ArticleController extends Controller
      *
      * @return void
      */
-    public function getAllArticle() {
-        $articles = Article::where('schools_id', Auth::user()->schools_id)
-            ->orderBy('created_at', 'desc')
-            ->get();
+    public function getAllArticle(Article $article) {
+        // $articles = Article::where('schools_id', Auth::user()->schools_id)
+        //     ->orderBy('created_at', 'desc')
+        //     ->get();
+        if(Auth::user()->role == 0) {
+            $articles = $article->modelShowArticle(['school_id' => Auth::user()->schools_id, 'grade' => Auth::user()->users_detail->grade, 'class' => Auth::user()->users_detail->class]);
+        } else {
+            $articles = $article->modelShowArticleAll(Auth::user()->schools_id);
+        }
         return view('articles', compact('articles'));
     }
 

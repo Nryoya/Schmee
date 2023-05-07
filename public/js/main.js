@@ -415,3 +415,23 @@ if(ELEMENT_FORM_SEARCH) {
   const SEARCH = new Search();
   SEARCH.setEventlistener("submit", ELEMENT_FORM_SEARCH);
 }
+
+/**
+ * adminのユーザー削除確認
+ */
+const checkDelete = (element) => {
+  if(!confirm('削除しますか？')) {
+    element.preventDefault();
+    element.stopPropagation();
+  }
+}
+
+const USER_DELETE = document.getElementById("userDelete");
+/**
+ *ユーザー削除のイベント
+ */
+if(USER_DELETE) {
+  USER_DELETE.addEventListener("submit", (e) => {
+    checkDelete(e);
+  })
+}
