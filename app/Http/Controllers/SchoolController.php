@@ -79,16 +79,16 @@ class SchoolController extends Controller
     }
 
     /**
-     * 
+     * 学校削除機能
      *
-     * @param [type] $school_id
+     * @param integer $school_id
      * @param School $school
-     * @return void
+     * @return redirect
      */
     public function controllerDeleteSchool($school_id, School $school) {
         $school->modelDeleteSchool($school_id);
 
-        redirect(route('admin'));
+        return redirect(route('admin'));
     }
 
     /**

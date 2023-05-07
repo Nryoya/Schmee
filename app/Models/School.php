@@ -82,9 +82,15 @@ class School extends Model
             ]);
     }
 
+    /**
+     * 学校削除
+     *
+     * @param integer $school_id
+     * @return void
+     */
     public function modelDeleteSchool($school_id) {
         $school = $this->query()
             ->where('id', $school_id)
-            ->first();
+            ->delete();
     }
 }

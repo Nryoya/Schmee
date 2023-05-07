@@ -192,5 +192,10 @@ Route::middleware(['auth'])->group(function() {
     
     Route::get('admin/ByArticles/{id}', [ArticleController::class, 'bySchoolArticles'])->name('adminByArticles');
     
-    Route::get('admin/ArticleDetail/{id}', [ArticleController::class, 'adminArticleDetail'])->name('adminArticleDetail');
+    Route::get('admin/ArticleDetail/{article_id}', [ArticleController::class, 'adminArticleDetail'])->name('adminArticleDetail');
+
+    /**
+     * 学校通信検索
+     */
+    Route::get('admin/searchResultArticle', [ArticleController::class, 'controllerAdminSearchArticle'])->name('adminSearchArticle');
 });
