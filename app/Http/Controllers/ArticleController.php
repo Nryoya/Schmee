@@ -8,9 +8,38 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CommentController;
 use App\Models\Like;
 use App\Models\Comment;
+use App\Http\Requests\articleRequest;
+use App\Repositories\Interfaces\ArticleRepositoryInterface;
+use App\Repositories\Interfaces\UserRepositoryInterface;
 
 class ArticleController extends Controller
 {
+    /**
+     * articleRepositoryInterface
+     *
+     * @var object
+     */
+    private $article_repository;
+
+    /**
+     * userRepositoryInterface
+     *
+     * @var object
+     */
+    private $user_repository;
+
+    /**
+     * コンストラクト
+     *
+     * @param ArticleRepositoryInterface $article_repository
+     * @param UserRepositoryInterface $user_repository
+     */
+    public function __construct(ArticleRepositoryInterface $article_repository, UserRepositoryInterface $user_repository)
+    {
+        $this->article_repository = $article_repository;
+        $this->user_repository = $user_repository;
+    }
+
     // admin
     /**
      *  学校通信一覧
@@ -50,8 +79,6 @@ class ArticleController extends Controller
                 ->orderby('articles.created_at', 'desc')
                 ->groupBy('comments.articles_id', 'teachers_detail.imgPath', 'users.name')
                 ->get();
-
-                // どの記事にいいねしているかいいねテーブルから取ってきてviewで学校通信IDと比較？？
         } else {
             $articles = Article::where('articles.Schools_id', Auth::user()->schools_id)
                 ->join('teachers_detail', 'articles.users_id', '=', 'teachers_detail.users_id')
@@ -84,44 +111,30 @@ class ArticleController extends Controller
     /**
      * 学校通信投稿
      *
-     * @param Request $request
-     * @return redirect articlesを返す
+     * @param articleRequest $request
+     * @return redirect
      */
-    public function post(Request $request) {
-        
-        // バリデーション
-        $credentials = $request->validate([
-            'ttl' => ['required'],
-            'body' => ['required', 'max:255'],
-        ]);
-
+    public function post(articleRequest $request): redirect
+    {
         // imgの取得
         $img = $request->file('img');
         
-        // imgに値が入っていれば
-        if(isset($img)) {
+        if(isset($img))
+        {   
+            //storageに登録しパスを代入
             $path = $img->store('img', 'public');
-            Article::create([
-                'title' => $credentials['ttl'],
-                'body' => $credentials['body'],
-                'articleImg' => $path, 
-                'schools_id' => Auth::user()->schools_id,
-                'users_id' => Auth::user()->id,
-                'grade' => $request->grade,
-                'class' => $request->class,
-            ]);
-        } else {
-            Article::create([
-                'title' => $credentials['ttl'],
-                'body' => $credentials['body'],
-                'schools_id' => Auth::user()->schools_id,
-                'users_id' => Auth::user()->id,
-                'grade' => $request->grade,
-                'class' => $request->class,
-            ]);
+            $request['path'] = $path;
+            $post_article = $this->article_repository->postCreateIsImg($request);
         }
 
-        return redirect('articles');
+        $post_article = $this->article_repository->postCreate($request);
+
+        if($request->send_email == 'on')
+        {
+
+        }
+
+        return redirect(route('articles'));
     }
 
     /**

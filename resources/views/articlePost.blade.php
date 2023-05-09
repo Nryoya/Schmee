@@ -29,7 +29,7 @@
         <option value="3">3</option>
       </select>
     </div>
-    <label class="checkboxWrap"><input class="checkbox" type="checkbox">mailで送信</label>
+    <label class="checkboxWrap"><input class="checkbox" type="checkbox" name="send_email">mailで送信</label>
     <input class="submit submit--blue" type="submit" value="投稿">
   </form>
 @endsection
