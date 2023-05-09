@@ -455,6 +455,13 @@ body {
 	color: #f7f7f7;
 }
 
+/* パスワード再設定 */
+.title {
+	color: #f7f7f7;
+	width: 80%;
+	margin: 0 auto 30px auto;
+}
+
 /*------------------------------------- choose.blade.php -------------------------------------*/
 /* choose block */
 .choose {
