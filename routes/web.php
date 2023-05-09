@@ -8,6 +8,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\PasswordController;
 
 
 /*
@@ -63,6 +64,44 @@ Route::middleware(['guest'])->group(function() {
     Route::get('forget', function() {
         return view('forget');
     })->name('forget');
+
+    /**
+     * パスワードリセット
+     */
+    Route::prefix('password_reset')->name('password_reset.')->group(function() {
+        Route::prefix('email')->name('email.')->group(function() {
+
+            /**
+             * パスワードリセットフォームページ
+             */
+            Route::get('/', [PasswordController::class, 'emailFormResetPassword'])->name('form');
+
+            /**
+             * パスワードリセットメール送信
+             */
+            Route::post('/', [PasswordController::class, 'sendEmailResetPassword'])->name('send');
+
+            /**
+             * メール送信完了ページ
+             */
+            Route::get('/send_Complete', [PasswordController::class, 'sendComplete'])->name('send_complete');
+        });
+
+        /**
+         * パスワード再設定ページ
+         */
+        Route::get('/edit', [PasswordController::class, 'edit'])->name('edit');
+
+        /**
+         * パスワード更新処理
+         */
+        Route::post('/update', [PasswordController::class, 'update'])->name('update');
+
+        /**
+         * パスワード更新終了ページ
+         */
+        Route::get('/edited', [PasswordController::class, 'edited'])->name('edited');
+    });
 });
 
 Route::middleware(['auth'])->group(function() {
