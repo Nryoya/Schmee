@@ -22,4 +22,28 @@ interface UserRepositoryInterface
      * @return void
      */
     public function updateUserPassword(string $password, int $id): void;
+
+    /**
+     * 引数に渡されたschool_id、grade、class、roleを持つユーザーを取得する
+     *
+     * @param array $to_email_data
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getFromSchoolGradeClassRole(array $to_email_data): \Illuminate\Database\Eloquent\Collection;
+
+    /**
+     * 引数に渡されたschool_id、grade、roleを持つユーザーを取得する
+     *
+     * @param array $to_email_data
+     * @return \Illuminate\Database\Eloquent\Collection 
+     */
+    public function getFromSchoolGradeRole(array $to_email_data): \Illuminate\Database\Eloquent\Collection;
+
+    /**
+     * 引数に渡されたschool_id、roleを持つユーザーを取得する
+     *
+     * @param array $to_email_data
+     * @return \Illuminate\Database\Eloquent\Collection 
+     */
+    public function getFromSchoolRole(array $to_email_data): \Illuminate\Database\Eloquent\Collection;
 }

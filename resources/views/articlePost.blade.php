@@ -1,6 +1,6 @@
 @extends('layouts.userBackLayout')
 @section('content')
-  <form class="form form-margin-big" action="{{ route('postCreate') }}" method="POST" enctype="multipart/form-data">
+  <form class="form form-margin-big" action="{{ route('postCreate') }}" method="POST" enctype="multipart/form-data" id="js-postForm">
     @csrf
     <h2 class="from__headline">学校通信投稿</h2>
     @error('ttl')
