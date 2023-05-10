@@ -13,7 +13,8 @@ class RepositoryServiceProvider extends ServiceProvider
      */
     private $models = [
         'User',
-        'UserToken'
+        'UserToken',
+        'Article',
     ];
 
     /**

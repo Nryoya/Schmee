@@ -8,9 +8,41 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\CommentController;
 use App\Models\Like;
 use App\Models\Comment;
+use App\Http\Requests\articleRequest;
+use App\Repositories\Interfaces\ArticleRepositoryInterface;
+use App\Repositories\Interfaces\UserRepositoryInterface;
+use App\Mail\PostMail;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 class ArticleController extends Controller
 {
+    /**
+     * articleRepositoryInterface
+     *
+     * @var object
+     */
+    private $article_repository;
+
+    /**
+     * userRepositoryInterface
+     *
+     * @var object
+     */
+    private $user_repository;
+
+    /**
+     * コンストラクト
+     *
+     * @param ArticleRepositoryInterface $article_repository
+     * @param UserRepositoryInterface $user_repository
+     */
+    public function __construct(ArticleRepositoryInterface $article_repository, UserRepositoryInterface $user_repository)
+    {
+        $this->article_repository = $article_repository;
+        $this->user_repository = $user_repository;
+    }
+
     // admin
     /**
      *  学校通信一覧
@@ -50,8 +82,6 @@ class ArticleController extends Controller
                 ->orderby('articles.created_at', 'desc')
                 ->groupBy('comments.articles_id', 'teachers_detail.imgPath', 'users.name')
                 ->get();
-
-                // どの記事にいいねしているかいいねテーブルから取ってきてviewで学校通信IDと比較？？
         } else {
             $articles = Article::where('articles.Schools_id', Auth::user()->schools_id)
                 ->join('teachers_detail', 'articles.users_id', '=', 'teachers_detail.users_id')
@@ -84,44 +114,60 @@ class ArticleController extends Controller
     /**
      * 学校通信投稿
      *
-     * @param Request $request
-     * @return redirect articlesを返す
+     * @param articleRequest $request
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function post(Request $request) {
-        
-        // バリデーション
-        $credentials = $request->validate([
-            'ttl' => ['required'],
-            'body' => ['required', 'max:255'],
-        ]);
-
+    public function post(articleRequest $request): \Illuminate\Http\RedirectResponse
+    {
         // imgの取得
         $img = $request->file('img');
         
-        // imgに値が入っていれば
-        if(isset($img)) {
+        if(isset($img))
+        {   
+            //storageに登録しパスを代入
             $path = $img->store('img', 'public');
-            Article::create([
-                'title' => $credentials['ttl'],
-                'body' => $credentials['body'],
-                'articleImg' => $path, 
-                'schools_id' => Auth::user()->schools_id,
-                'users_id' => Auth::user()->id,
-                'grade' => $request->grade,
-                'class' => $request->class,
-            ]);
-        } else {
-            Article::create([
-                'title' => $credentials['ttl'],
-                'body' => $credentials['body'],
-                'schools_id' => Auth::user()->schools_id,
-                'users_id' => Auth::user()->id,
-                'grade' => $request->grade,
-                'class' => $request->class,
-            ]);
+            $request['path'] = $path;
+            $post_article = $this->article_repository->postCreateIsImg($request);
         }
 
-        return redirect('articles');
+        // //画像がない時
+        $post_article = $this->article_repository->postCreate($request);
+
+        //send_mailにcheckがついていた時
+        if($request->send_email == 'on')
+        {
+            //〇年〇組の保護者にメールを送る処理
+            if($request->grade != 0 && $request->class != 0)
+            {
+                $to_email_users = $this->user_repository->getFromSchoolGradeClassRole(['school_id' => Auth::user()->schools_id, 'grade' => $request->grade, 'class' => $request->class, 'role' => 0]);
+                for($i = 0; $i < count($to_email_users); $i++)
+                {
+                    Mail::to($to_email_users[$i])->send(new PostMail($to_email_users[$i], $post_article));
+                }
+            }
+
+            //〇学年の保護者にメールを送る処理
+            if($request->grade != 0)
+            {
+                $to_email_users = $this->user_repository->getFromSchoolGradeRole(['school_id' => Auth::user()->schools_id, 'grade' => $request->grade, 'role' => 0]);
+                for($i = 0; $i < count($to_email_users); $i++)
+                {
+                    Mail::to($to_email_users[$i])->send(new PostMail($to_email_users[$i], $post_article));
+                }
+            }
+
+            //学校の保護者全てに送る処理
+            if($request->grade == 0 && $request->class == 0)
+            {
+                $to_email_users = $this->user_repository->getFromSchoolRole(['school_id' => Auth::user()->schools_id, 'role' => 0]);
+                for($i = 0; $i < count($to_email_users); $i++)
+                {
+                    Mail::to($to_email_users[$i])->send(new PostMail($to_email_users[$i], $post_article));
+                }
+            }
+        }
+
+        return redirect(route('articles'));
     }
 
     /**

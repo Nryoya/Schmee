@@ -1,6 +1,6 @@
 @extends('layouts.userBackLayout')
 @section('content')
-  <form class="form form-margin-big" action="{{ route('postCreate') }}" method="POST" enctype="multipart/form-data">
+  <form class="form form-margin-big" action="{{ route('postCreate') }}" method="POST" enctype="multipart/form-data" id="js-postForm">
     @csrf
     <h2 class="from__headline">学校通信投稿</h2>
     @error('ttl')
@@ -29,7 +29,7 @@
         <option value="3">3</option>
       </select>
     </div>
-    <label class="checkboxWrap"><input class="checkbox" type="checkbox">mailで送信</label>
+    <label class="checkboxWrap"><input class="checkbox" type="checkbox" name="send_email">mailで送信</label>
     <input class="submit submit--blue" type="submit" value="投稿">
   </form>
 @endsection

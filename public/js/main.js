@@ -435,3 +435,21 @@ if(USER_DELETE) {
     checkDelete(e);
   })
 }
+
+
+/**
+ * ポストフォームのバリデーションのため
+ * 
+ * @type {element} POST_FORM
+ */
+const POST_FORM = document.getElementById("js-postForm");
+if(POST_FORM) {
+  POST_FORM.addEventListener("submit", (e) => {
+    //クラスのみが選択されている時にアラートを出し、イベントを止める。
+    if(e.target.grade.value == 0 && e.target.class.value != 0) {
+      e.preventDefault();
+      e.stopPropagation();
+      alert("学年を選択してください。");
+    }
+  })
+}
