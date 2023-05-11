@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\ArticleController;
@@ -60,10 +61,6 @@ Route::middleware(['guest'])->group(function() {
     });
 
     Route::post('teacherInsert', [UserController::class, 'teacherInsert'])->name('teacherInsert');
-    
-    Route::get('forget', function() {
-        return view('forget');
-    })->name('forget');
 
     /**
      * パスワードリセット
@@ -126,12 +123,10 @@ Route::middleware(['auth'])->group(function() {
     
     Route::get('mypage/{id}', [UserController::class, 'getMyDetail'])->name('mypage');
     
-    // Route::get('articles', [ArticleController::class, 'articleAll'])->name('articles');
     Route::get('articles', [ArticleController::class, 'getAllArticle'])->name('articles');
 
     Route::post('/like', [LikeController::class, 'like']);
     
-    // Route::get('articleDetail/{id}', [ArticleController::class, 'userArticleDetail'])->name('articleDetail');
     Route::get('articleDetail/{id}', [ArticleController::class, 'getFindArticle'])->name('articleDetail');
 
     Route::get('articleDelete/{id}', [ArticleController::class, 'updateDelFg'])->name('updateDelFg');
@@ -198,11 +193,21 @@ Route::middleware(['auth'])->group(function() {
      * 学校登録機能
      */
     Route::post('admin/RegisterResult', [SchoolController::class, 'create'])->name('schoolRegister');
+
+    /**
+     * 学校代表者登録ページの表示
+     */
+    Route::get('admin/representative/{school_id}', [UserController::class, 'showRepresentative'])->name('showRepresentative');
     
     /**
      * 学校代表者登録機能
      */
     Route::post('admin/representativeResult', [UserController::class, 'representative'])->name('representativeRegister');
+
+    /**
+     * 学校代表者詳細登録ページの表示
+     */
+    Route::get('admin/representativeDetail/{user_id}', [UserController::class, 'showRepresentativeDetail'])->name('showRepresentativeDetail');
 
     /**
      * 学校代表者詳細登録機能

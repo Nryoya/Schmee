@@ -1,6 +1,6 @@
 @extends('layouts.backLayout')
 @section('content')
-<form class="form form-margin-big" action="{{ route('schoolRegister') }}" method="post">
+<form class="form form-margin-big" action="{{ route('schoolRegister') }}" method="POST">
   @csrf
   <h2 class="from__headline">学校登録</h2>
   @error('code')

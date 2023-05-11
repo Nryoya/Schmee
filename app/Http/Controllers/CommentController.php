@@ -10,42 +10,6 @@ use Carbon\Carbon;
 
 class CommentController extends Controller
 {
-    /**
-     * コメント一覧
-     *
-     * @param integer $id
-     * @return array $comments
-     */
-    public function getComments($id) {
-        $teacher = Comment::where('articles_id', $id)
-            ->join('users', 'comments.users_id', '=', 'users.id')
-            ->join('teachers_detail', 'comments.users_id', '=', 'teachers_detail.users_id')
-            ->select('comments.*', 'users.name', 'teachers_detail.imgPath');
-
-        $comments = Comment::where('articles_id', $id)
-            ->join('users', 'comments.users_id', '=', 'users.id')
-            ->join('users_detail', 'comments.users_id', '=', 'users_detail.users_id')
-            ->select('comments.*', 'users.name', 'users_detail.imgPath')
-            ->union($teacher)
-            ->orderby('created_at', 'desc')
-            ->get();
-        
-        return $comments;
-    }
-
-
-    // /**
-    //  * コメントのカウント
-    //  *
-    //  * @param integer $id
-    //  * @return integer $count
-    //  */
-    // public function getCommentsCount($id) {
-    //     $count = Comment::where('articles_id', $id)
-    //         ->count();
-
-    //     return $count;
-    // }
 
     /**
      * 非同期コメント投稿
@@ -102,6 +66,12 @@ class CommentController extends Controller
     }
 
 
+    /**
+     * 非同期コメント削除機能
+     *
+     * @param Request $request
+     * @return json
+     */
     public function commentDelete(Request $request) {
         Comment::where('id', $request->id)
             ->update([

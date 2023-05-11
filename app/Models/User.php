@@ -277,6 +277,7 @@ class User extends Authenticatable
      * admin
      */
 
+
     /**
      * 同じ学校且つキーワードに一致するユーザーを取得
      *
