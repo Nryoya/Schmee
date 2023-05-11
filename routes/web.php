@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SchoolController;
 use App\Http\Controllers\ArticleController;
@@ -8,6 +9,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\RoomController;
 use App\Http\Controllers\MessageController;
+use App\Http\Controllers\PasswordController;
 
 
 /*
@@ -59,10 +61,44 @@ Route::middleware(['guest'])->group(function() {
     });
 
     Route::post('teacherInsert', [UserController::class, 'teacherInsert'])->name('teacherInsert');
-    
-    Route::get('forget', function() {
-        return view('forget');
-    })->name('forget');
+
+    /**
+     * パスワードリセット
+     */
+    Route::prefix('password_reset')->name('password_reset.')->group(function() {
+        Route::prefix('email')->name('email.')->group(function() {
+
+            /**
+             * パスワードリセットフォームページ
+             */
+            Route::get('/', [PasswordController::class, 'emailFormResetPassword'])->name('form');
+
+            /**
+             * パスワードリセットメール送信
+             */
+            Route::post('/', [PasswordController::class, 'sendEmailResetPassword'])->name('send');
+
+            /**
+             * メール送信完了ページ
+             */
+            Route::get('/send_Complete', [PasswordController::class, 'sendComplete'])->name('send_complete');
+        });
+
+        /**
+         * パスワード再設定ページ
+         */
+        Route::get('/edit', [PasswordController::class, 'edit'])->name('edit');
+
+        /**
+         * パスワード更新処理
+         */
+        Route::post('/update', [PasswordController::class, 'update'])->name('update');
+
+        /**
+         * パスワード更新終了ページ
+         */
+        Route::get('/edited', [PasswordController::class, 'edited'])->name('edited');
+    });
 });
 
 Route::middleware(['auth'])->group(function() {
@@ -87,12 +123,10 @@ Route::middleware(['auth'])->group(function() {
     
     Route::get('mypage/{id}', [UserController::class, 'getMyDetail'])->name('mypage');
     
-    // Route::get('articles', [ArticleController::class, 'articleAll'])->name('articles');
     Route::get('articles', [ArticleController::class, 'getAllArticle'])->name('articles');
 
     Route::post('/like', [LikeController::class, 'like']);
     
-    // Route::get('articleDetail/{id}', [ArticleController::class, 'userArticleDetail'])->name('articleDetail');
     Route::get('articleDetail/{id}', [ArticleController::class, 'getFindArticle'])->name('articleDetail');
 
     Route::get('articleDelete/{id}', [ArticleController::class, 'updateDelFg'])->name('updateDelFg');
@@ -159,11 +193,21 @@ Route::middleware(['auth'])->group(function() {
      * 学校登録機能
      */
     Route::post('admin/RegisterResult', [SchoolController::class, 'create'])->name('schoolRegister');
+
+    /**
+     * 学校代表者登録ページの表示
+     */
+    Route::get('admin/representative/{school_id}', [UserController::class, 'showRepresentative'])->name('showRepresentative');
     
     /**
      * 学校代表者登録機能
      */
     Route::post('admin/representativeResult', [UserController::class, 'representative'])->name('representativeRegister');
+
+    /**
+     * 学校代表者詳細登録ページの表示
+     */
+    Route::get('admin/representativeDetail/{user_id}', [UserController::class, 'showRepresentativeDetail'])->name('showRepresentativeDetail');
 
     /**
      * 学校代表者詳細登録機能

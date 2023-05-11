@@ -4,7 +4,10 @@
   @csrf
   <h2 class="from__headline">初回登録</h2>
   <input type="hidden" value="{{ Auth::user()->id }}" name="id">
-  <input class="input input--blue input--margin-top" type="text" placeholder="役職" name="jobs" value{{ old('jobs') }}>
+  @error('jobs')
+    <p class="error">{{ $message }}</p>
+  @enderror
+  <input class="input input--blue" type="text" placeholder="役職" name="jobs" value{{ old('jobs') }}>
   <div class="gradeClass">
     <div>
       @error('grade')

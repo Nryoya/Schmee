@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Http\RedirectResponse;
 use App\Models\School;
 
 class SchoolController extends Controller
@@ -95,9 +96,10 @@ class SchoolController extends Controller
      * 学校登録
      *
      * @param Request $request
-     * @return view adminRepresentativeを返す
+     * @return \Illuminate\Http\RedirectResponse
      */
-    public function create(Request $request) {
+    public function create(Request $request): \Illuminate\Http\RedirectResponse
+    {
         // バリデーション
         $credentials = $request->validate([
             'code' => ['required', 'regex:/^[A-Z]{1}[0-9]{12}$/'],
@@ -106,15 +108,13 @@ class SchoolController extends Controller
             'tel' => ['required', 'digits_between:10,11'],
         ]);
         // 挿入
-        School::create([
+        $school = School::create([
             'code' => $credentials['code'],
             'name' => $credentials['name'],
             'address' => $credentials['address'],
             'tel' => $credentials['tel'],
         ]);
-        // 登録したidの取得
-        $id = school::where('name', $credentials['name'])->get('id');
 
-        return view('admin.adminRepresentative', compact('id'));
+        return redirect()->route('showRepresentative', ['school_id' => $school->id]);
     }
 }

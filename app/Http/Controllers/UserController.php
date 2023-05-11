@@ -11,6 +11,8 @@ use App\Models\UserDetail;
 use App\Models\teacherDetail;
 use Illuminate\Support\Facades\Hash;
 
+use App\Http\Requests\representativeRequest;
+
 class UserController extends Controller
 {
 
@@ -84,22 +86,38 @@ class UserController extends Controller
 
     // admin
     /**
+      * 学校代表者登録ページに遷移
+      *
+      * @param integer $school_id
+      * @return \Illuminate\View\View
+      */
+        public function showRepresentative($school_id): \Illuminate\View\View
+        {
+            return view('admin.adminRepresentative', ['school_id' => $school_id]);
+        }
+
+    /**
      * 代表者登録
      *
-     * @param Request $request
-     * @return view
+     * @param representativeRequest $request
+     * @return \Illuminate\Http\RedirectResponse;
      */
-    public function representative(Request $request, User $user) {
-        // バリデーション
-        $credentials = $request->validate([
-            'name' => ['required'],
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-            'schools_id' => [],
-        ]);
-        $user_data = $user->modelRepresentativeInsert($credentials);
+    public function representative(representativeRequest $request, User $user): \Illuminate\Http\RedirectResponse
+    {
+        $user_data = $user->modelRepresentativeInsert($request);
 
-        return view('admin.user_detail_register', ['user_data' => $user_data]);
+        return redirect()->route('showRepresentativeDetail', ['user_id' => $user_data['id']]);
+    }
+
+    /**
+     * 学校代表者詳細登録ページに遷移
+     *
+     * @param integer $user_id
+     * @return \Illuminate\View\View
+     */
+    public function showRepresentativeDetail($user_id): \Illuminate\View\View
+    {
+        return view('admin.user_detail_register', ['user_id' => $user_id]);
     }
 
     /**
