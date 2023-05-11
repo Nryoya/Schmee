@@ -2,8 +2,8 @@
 @section('content')
   <form class="form" action="{{ route('insert') }}" method="POST">
     @csrf
-    <p class="code">学校名:{{ session('name') }}</p>
-    <input type="hidden" name="schools_id" value="{{ session('id') }}">
+    <p class="code">学校名:{{ $school_name }}</p>
+    <input type="hidden" name="schools_id" value="{{ $school_id }}">
     @error('name')
       <p class="error">{{ $message }}</p>
     @enderror
