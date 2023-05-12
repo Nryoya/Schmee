@@ -230,19 +230,28 @@ class UserController extends Controller
             'code' => ['required', 'regex:/^[A-Z]{1}[0-9]{12}$/'],
         ]);
         // 学校コードのチェック
-        $bool = School::where('code', $credentials['code'])->exists();
-        if($bool) {
-            $result = School::where('code', $credentials['code'])->get();
-            session([
-                'id' => $result[0]->id,
-                'name' => $result[0]->name,
-            ]);
-            return redirect('signup');
+        $is_school = School::where('code', $credentials['code'])->exists();
+        if($is_school) {
+            $school_data = School::where('code', $credentials['code'])->first();
+
+            return redirect()->route('signup', ['school_id' => $school_data['id'], 'school_name' => $school_data['name']]);
         } else {
             return back()->withErrors([
                 'error' => '*学校コードが存在しません。'
             ])->withInput();
         }
+    }
+
+    /**
+     * signupページの表示
+     *
+     * @param integer $school_id
+     * @param string $school_name
+     * @return \illuminate\View\View
+     */
+    public function signup(int $school_id, string $school_name): \illuminate\View\View
+    {
+        return view('signup', ['school_id' => $school_id, 'school_name' => $school_name]);
     }
 
     /**
