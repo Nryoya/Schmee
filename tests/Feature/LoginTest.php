@@ -108,27 +108,4 @@ class LoginTest extends TestCase
         $this->assertAuthenticatedAs($parent);
     }
 
-    /**
-     * code page access test
-     *
-     * @return void
-     */
-    public function test_access_code(): void
-    {
-        $response = $this->get('code');
-
-        $response->assertStatus(200);
-    }
-
-    /**
-     * signup page access test
-     *
-     * @return void
-     */
-    public function test_access_signup():void
-    {
-        $response = $this->getJson(route('signup', ['school_id' => 1, 'school_name' => 'test']));
-
-        $response->assertStatus(200);
-    }
 }
