@@ -41,12 +41,7 @@ Route::middleware(['guest'])->group(function() {
     
     Route::post('check', [UserController::class, 'codeCheck'])->name('check');
 
-    Route::get('signup', function() {
-        if(!session('name')) {
-            return view('code');
-        }
-        return view('signup');
-    })->name('signup');
+    Route::get('signup/{school_id}/{school_name}', [UserController::class, 'signup'])->name('signup');
 
     Route::post('insert', [UserController::class, 'insert'])->name('insert');
 
