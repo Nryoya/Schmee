@@ -165,7 +165,12 @@ body {
 .selects {
 	display: flex;
 	flex-direction: column;
-	margin-bottom: 15px;
+	margin-bottom: 30px;
+}
+
+.selects__to {
+	color: rgba(67, 88, 117, .5);
+	margin-bottom: 10px;
 }
 
 .select {
@@ -175,15 +180,22 @@ body {
 	width: 90px;
 }
 
+.select-margin-bottom {
+	margin-bottom: 7px;
+}
+
 .select:nth-child(1) {
 	margin-bottom: 15px;
 }
 
 /* checkbox block */
 .checkboxWrap {
-	margin-bottom: 30px;
 	display: inline-block;
 	color: rgba(67, 88, 117, .5);
+}
+
+.checkboxWrap-margin {
+	margin-bottom: 30px;
 }
 
 .checkbox {

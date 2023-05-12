@@ -121,6 +121,13 @@ class ArticleController extends Controller
     {
         // imgの取得
         $img = $request->file('img');
+
+        //send_allにcheckがついていた時
+        if($request->send_all == 'on')
+        {
+            $request['grade'] = 0;
+            $request['class'] = 0;
+        }
         
         if(isset($img))
         {   
@@ -157,7 +164,7 @@ class ArticleController extends Controller
             }
 
             //学校の保護者全てに送る処理
-            if($request->grade == 0 && $request->class == 0)
+            if($request->send_all == 'on')
             {
                 $to_email_users = $this->user_repository->getFromSchoolRole(['school_id' => Auth::user()->schools_id, 'role' => 0]);
                 for($i = 0; $i < count($to_email_users); $i++)
