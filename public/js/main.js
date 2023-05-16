@@ -437,19 +437,96 @@ if(USER_DELETE) {
 }
 
 
-/**
- * ポストフォームのバリデーションのため
- * 
- * @type {element} POST_FORM
- */
+/** @type {HTMLElement} POST_FORM */
 const POST_FORM = document.getElementById("js-postForm");
+
+/** @type {HTMLElement} POST_CHECKBOX */
+const POST_CHECKBOX = document.querySelectorAll(".js-check");
+
+/**
+ * 一つだけチェックされているか確認する処理
+ * 
+ * @returns {number} checkCount
+ */
+const isOneChecked = () => {
+  /** @type {number} checkCount */
+  let checkCount = 0;
+
+  for(let i = 0; i < POST_CHECKBOX.length; i++) {
+    if(POST_CHECKBOX[i].checked === true) {
+      checkCount++;
+    }
+  }
+  return checkCount;
+}
+
+/**
+ * イベントを止めた後にアラートを出す処理
+ * 
+ * @param {string} alertText 
+ */
+const stopEventAfterAlert = (submittedForm ,alertText) => {
+  submittedForm.preventDefault();
+  submittedForm.stopPropagation();
+  alert(alertText);
+}
+
 if(POST_FORM) {
   POST_FORM.addEventListener("submit", (e) => {
+    //複数checkされていた時の処理
+    if(isOneChecked() != 1) {
+      stopEventAfterAlert(e, "チェックボックスは1つ選択してください。");
+    }
+
     //クラスのみが選択されている時にアラートを出し、イベントを止める。
     if(e.target.grade.value == 0 && e.target.class.value != 0) {
-      e.preventDefault();
-      e.stopPropagation();
-      alert("学年を選択してください。");
+      stopEventAfterAlert(e, "学年を選択してください。");
     }
   })
+}
+
+/** @type {HTMLElement} CHECKBOX_GRADE */
+const CHECKBOX_GRADE = document.querySelector(".js-check-grade");
+/** @type {HTMLElement} CHECKBOX_CLASS */
+const CHECKBOX_CLASS = document.querySelector(".js-check-class");
+
+/**
+ * チェックされた時にクラスをtoggleする処理
+ * 
+ * @param {HTMLElement} checkElement 
+ */
+const isChecked = (checkElement) => {
+  checkElement.closest(".selects__wrap").children[1].classList.toggle("active");
+}
+
+if(CHECKBOX_GRADE && CHECKBOX_CLASS) {
+  CHECKBOX_GRADE.addEventListener("change", (e) => {
+    isChecked(e.target);
+  })
+  CHECKBOX_CLASS.addEventListener("change", (e) => {
+    isChecked(e.target);
+    isChecked(CHECKBOX_GRADE);
+  })
+}
+
+/**
+ * 学校記事テキストの文字数によってドットをつける
+ */
+/** @type {element} ELEMENT_ARTICLE_TEXT */
+const ELEMENT_ARTICLE_TEXT = document.querySelectorAll(".js-articleText");
+const SEGMENTER = new Intl.Segmenter("ja", {granularity: "grapheme"});
+/** @type {integer} MAX */
+const MAX = 25;
+
+if(ELEMENT_ARTICLE_TEXT) {
+  for(let i = 0; i < ELEMENT_ARTICLE_TEXT.length; i++) {
+    /** @type {string} charMaxMoreForDot */
+    let charMaxMoreForDot = ELEMENT_ARTICLE_TEXT[i].textContent;
+    let segments = SEGMENTER.segment(ELEMENT_ARTICLE_TEXT[i].textContent);
+    
+    if([...segments].length > MAX) {
+      let afterFormatArticleTxt = charMaxMoreForDot.substring(0, 25);
+      ELEMENT_ARTICLE_TEXT[i].textContent = afterFormatArticleTxt + "...";
+    }
+  }
 }

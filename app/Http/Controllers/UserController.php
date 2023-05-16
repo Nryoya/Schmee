@@ -525,8 +525,8 @@ class UserController extends Controller
             $credentials = $request->validate([
                 'name' => ['required'],
                 'email' => ['required', 'email'],
-                'grade' => ['required'],
-                'class' => ['required'],
+                'grade' => ['required', 'digits_between:1,1'],
+                'class' => ['required', 'digits_between:1,1'],
                 'onething' => ['required', 'max:50'],
                 'tel' => ['required',  'digits_between:10,11'],
                 'address' => ['required', 'max:50'],
@@ -547,8 +547,8 @@ class UserController extends Controller
                 'name' => ['required'],
                 'email' => ['required', 'email'],
                 'jobs' => ['required'],
-                'grade' => ['required'],
-                'class' => ['required'],
+                'grade' => ['required', 'digits_between:1,1'],
+                'class' => ['required', 'digits_between:1,1'],
                 'introduction' => ['required', 'max:250'],
             ]);
             $user->userUpdate($request->id, $credentials['name'], $credentials['email']);

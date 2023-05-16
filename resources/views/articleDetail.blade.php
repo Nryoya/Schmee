@@ -25,8 +25,8 @@
               <img class="article__body-img" src="{{ Storage::url($articles->articleImg) }}">
             </div>
           @endif
-          <h2>{{ $articles->title }}</h2>
-          <p>{!! nl2br(htmlspecialchars($articles->body)) !!}</p>
+          <h2 class="article__body-title">{{ $articles->title }}</h2>
+          <p  class="article__body-txt">{!! nl2br(htmlspecialchars($articles->body)) !!}</p>
         </div>
         <time class="article__time">{{ $articles->created_at }}</time>
       </div>
@@ -72,7 +72,7 @@
     <input type="hidden" name="articles_id" value="{{ $articles->id }}" id="articles_id">
     <input type="hidden" name="users_id" value="{{ Auth::user()->id }}" id="users_id">
     <textarea class="message__txt" name="body" placeholder="コメント" id="body"></textarea>
-    <button class="message__iconWrap" id="comment"><i class="fa-solid fa-paper-plane message__icon"></i></button>
+    <button class="message__iconWrap" id="comment"><i class="fa-solid fa-paper-plane comment__icon"></i></button>
   </div>
 </div>
 @endsection

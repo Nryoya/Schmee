@@ -16,20 +16,29 @@
     @enderror
     <textarea class="textarea" name="body" placeholder="投稿内容">{{ old('body') }}</textarea>
     <div class="selects">
-      <p class="selects__to">送信先</p>
-      <select class="select select-margin-bottom" name="grade">
-        <option hidden value="0">学年</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-      </select>
-      <select class="select select-margin-bottom" name="class">
-        <option hidden value="0">クラス</option>
-        <option value="1">1</option>
-        <option value="2">2</option>
-        <option value="3">3</option>
-      </select>
-      <label class="checkboxWrap"><input class="checkbox" type="checkbox" name="send_all">全体</label>
+      <div class="selects__wrap">
+        <label class="checkboxWrap checkboxWrap-origin"><input class="checkbox js-check-grade js-check" type="checkbox" name="send_grade">学年投稿</label>
+        <div class="selects__to-select">
+          <select class="select select-margin" name="grade">
+            <option hidden value="0">学年を選択</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </div>
+      </div>
+      <div class="selects__wrap">
+        <label class="checkboxWrap checkboxWrap-origin"><input class="checkbox js-check-class js-check" type="checkbox" name="send_grade_class">クラス投稿</label>
+        <div class="selects__to-select">
+          <select class="select select-margin" name="class">
+            <option hidden value="0">クラスを選択</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </div>
+      </div>
+      <label class="checkboxWrap checkboxWrap-origin"><input class="checkbox js-check" type="checkbox" name="send_all">学校全体投稿</label>
     </div>
     <label class="checkboxWrap checkboxWrap-margin"><input class="checkbox" type="checkbox" name="send_email">mailで送信</label>
     <input class="submit submit--blue" type="submit" value="投稿">

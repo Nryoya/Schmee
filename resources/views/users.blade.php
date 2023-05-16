@@ -15,8 +15,12 @@
             <img class="users__list-img" src="{{ Storage::url($user->teachers_detail->imgPath) }}">
           </div>
           <div class="users__list-detail">
+            @if ($user->teachers_detail->jobs == '担任')
+            <p class="users__list-gradeClass">{{ $user->teachers_detail->grade }}年{{ $user->teachers_detail->class }}組 {{ $user->teachers_detail->jobs }}</p>
+            @else
             <p class="users__list-gradeClass">{{ $user->teachers_detail->jobs }}</p>
-            <p class="users__list-name">{{ $user->name }}</p>
+            @endif
+            <p class="users__list-name">{{ $user->name }} 先生</p>
           </div>
         </a>   
       @endif

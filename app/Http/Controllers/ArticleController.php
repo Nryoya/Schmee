@@ -119,16 +119,22 @@ class ArticleController extends Controller
      */
     public function post(articleRequest $request): \Illuminate\Http\RedirectResponse
     {
-        // imgの取得
-        $img = $request->file('img');
+        //学年投稿にcheckがついていた時
+        if($request->send_grade == 'on')
+        {
+            $request['class'] = 0;
+        }
 
-        //send_allにcheckがついていた時
+        //学校全体にcheckがついていた時
         if($request->send_all == 'on')
         {
             $request['grade'] = 0;
             $request['class'] = 0;
         }
-        
+
+        // imgの取得
+        $img = $request->file('img');
+
         if(isset($img))
         {   
             //storageに登録しパスを代入
@@ -144,7 +150,7 @@ class ArticleController extends Controller
         if($request->send_email == 'on')
         {
             //〇年〇組の保護者にメールを送る処理
-            if($request->grade != 0 && $request->class != 0)
+            if($request->send_grade_class == 'on')
             {
                 $to_email_users = $this->user_repository->getFromSchoolGradeClassRole(['school_id' => Auth::user()->schools_id, 'grade' => $request->grade, 'class' => $request->class, 'role' => 0]);
                 for($i = 0; $i < count($to_email_users); $i++)
@@ -154,7 +160,7 @@ class ArticleController extends Controller
             }
 
             //〇学年の保護者にメールを送る処理
-            if($request->grade != 0)
+            if($request->send_grad == 'on')
             {
                 $to_email_users = $this->user_repository->getFromSchoolGradeRole(['school_id' => Auth::user()->schools_id, 'grade' => $request->grade, 'role' => 0]);
                 for($i = 0; $i < count($to_email_users); $i++)
