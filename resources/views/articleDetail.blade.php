@@ -25,8 +25,8 @@
               <img class="article__body-img" src="{{ Storage::url($articles->articleImg) }}">
             </div>
           @endif
-          <h2>{{ $articles->title }}</h2>
-          <p>{!! nl2br(htmlspecialchars($articles->body)) !!}</p>
+          <h2 class="article__body-title">{{ $articles->title }}</h2>
+          <p  class="article__body-txt">{!! nl2br(htmlspecialchars($articles->body)) !!}</p>
         </div>
         <time class="article__time">{{ $articles->created_at }}</time>
       </div>

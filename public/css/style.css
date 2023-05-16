@@ -761,9 +761,15 @@ body {
 	width: 100%;
 }
 
+.article__body-title {
+	margin-bottom: 5px;
+}
+
 .article__body-txt {
-	text-overflow: ellipsis;
-	white-space: nowrap;
+	margin-bottom: 5px;
+}
+
+.article__body-txt {
 	overflow: hidden;
 }
 

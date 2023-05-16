@@ -20,8 +20,8 @@
                     <img class="article__body-img" src="{{ Storage::url($article->articleImg) }}" alt="">
                   </div>
                 @endif
-                <h2>{{ $article->title }}</h2>
-                <p class="article__body-txt">{!! nl2br(htmlspecialchars($article->body)) !!}</p>
+                <h2 class="article__body-title">{{ $article->title }}</h2>
+                <p class="article__body-txt js-articleText">{!! nl2br(htmlspecialchars($article->body)) !!}</p>
               </div>
             </a>
           </div>
@@ -71,8 +71,8 @@
                   <img class="article__body-img" src="{{ Storage::url($article->articleImg) }}" alt="">
                 </div>
               @endif
-              <h2>{{ $article->title }}</h2>
-              <p class="article__body-txt">{!! nl2br(htmlspecialchars($article->body)) !!}</p>
+              <h2 class="article__body-title">{{ $article->title }}</h2>
+              <p class="article__body-txt js-articleText">{!! nl2br(htmlspecialchars($article->body)) !!}</p>
             </div>
           </a>
         </div>

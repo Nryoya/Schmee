@@ -453,3 +453,25 @@ if(POST_FORM) {
     }
   })
 }
+
+/**
+ * 学校記事テキストの文字数によってドットをつける
+ */
+/** @type {element} ELEMENT_ARTICLE_TEXT */
+const ELEMENT_ARTICLE_TEXT = document.querySelectorAll(".js-articleText");
+const SEGMENTER = new Intl.Segmenter("ja", {granularity: "grapheme"});
+/** @type {integer} MAX */
+const MAX = 25;
+
+if(ELEMENT_ARTICLE_TEXT) {
+  for(let i = 0; i < ELEMENT_ARTICLE_TEXT.length; i++) {
+    /** @type {string} charMaxMoreForDot */
+    let charMaxMoreForDot = ELEMENT_ARTICLE_TEXT[i].textContent;
+    let segments = SEGMENTER.segment(ELEMENT_ARTICLE_TEXT[i].textContent);
+    
+    if([...segments].length > MAX) {
+      let afterFormatArticleTxt = charMaxMoreForDot.substring(0, 25);
+      ELEMENT_ARTICLE_TEXT[i].textContent = afterFormatArticleTxt + "...";
+    }
+  }
+}

@@ -18,4 +18,5 @@
   <input class="input" type="password" name="password" placeholder="パスワード" value="{{ old('password') }}">
   <input class="submit" type="submit" value="関係者 新規登録">
 </form>
+<a class="back" href="{{ route('teacherCode') }}">戻る</a>
 @endsection
