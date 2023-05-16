@@ -81,17 +81,26 @@ body {
 	margin-top: 15px;
 }
 
-.input--blue {
+/* .input--blue {
 	color: #444;
 	border: 1px solid rgba(67, 88, 117, .5);
+} */
+
+.input--blue {
+	color: #333;
+	border: 1px solid #333;
 }
 
 .input::placeholder {
 	color: rgba(247, 247, 247, .5);
 }
 
-.input--blue::placeholder {
+/* .input--blue::placeholder {
 	color: rgba(67, 88, 117, .5);
+} */
+
+.input--blue::placeholder {
+	color: #333333;
 }
 
 .gradeClass {
@@ -113,7 +122,7 @@ body {
 .file {
 	margin: 0 auto 30px auto;
 	border-radius: 5px;
-	border: 1px solid rgba(67, 88, 117, .5);
+	border: 1px solid #333;
 	height: 40px;
 	overflow-x: scroll;
 }
@@ -124,7 +133,7 @@ body {
 
 .file__btn {
 	cursor: pointer;
-	color: rgba(67, 88, 117, .5);
+	color: #333;
 	white-space: nowrap;
 	line-height: 38px;
 	width: 100%;
@@ -153,12 +162,13 @@ body {
 	width: 100%;
 	margin-bottom: 30px;
 	border-radius: 5px;
-	border: rgba(67, 88, 117, .5) 1px solid;
+	border: #333 1px solid;
 	height: 200px;
 }
 
 .textarea::placeholder {
-	color: rgba(67, 88, 117, .5);
+	color: #333;
+	font-weight: lighter	;
 }
 
 /* selects block */
@@ -169,29 +179,43 @@ body {
 }
 
 .selects__to {
-	color: rgba(67, 88, 117, .5);
+	color: #333;
 	margin-bottom: 10px;
+}
+
+.selects__wrap {
+	margin-bottom: 5px;
+}
+
+.selects__to-select {
+	display: none;
+	transition: all .6s;
+}
+
+.selects__to-select.active {
+	display: block;
 }
 
 .select {
 	border-radius: 5px;
-	border: rgba(67, 88, 117, .5) 1px solid;
-	color: rgba(67, 88, 117, .5);
+	border: #333 1px solid;
+	color: #333;
 	width: 90px;
 }
 
-.select-margin-bottom {
-	margin-bottom: 7px;
-}
-
-.select:nth-child(1) {
-	margin-bottom: 15px;
+.select-margin {
+	margin: 5px 0 7px 15px;
 }
 
 /* checkbox block */
 .checkboxWrap {
 	display: inline-block;
-	color: rgba(67, 88, 117, .5);
+	color: #333;
+	flex: 1;
+}
+
+.checkboxWrap-origin {
+	width: fit-content;
 }
 
 .checkboxWrap-margin {
@@ -199,7 +223,6 @@ body {
 }
 
 .checkbox {
-	opacity: .5;
 	margin: 0 5px 0 0;
 }
 
@@ -591,6 +614,10 @@ body {
 	border-radius: 5px;
 }
 
+.header__user-img-white {
+	filter: brightness(0) invert(95%);
+}
+
 /*------------------------------------- mypageHeader.blade.php -------------------------------------*/
 .header__logout--right {
 	position: fixed;
@@ -696,12 +723,18 @@ body {
 .users__list-detail {
 	display: flex;
 	align-items: center;
-	width: 90%;
+	width: 100%;
 }
 
 .users__list-gradeClass {
 	flex: 1;
 	text-align: center;
+}
+
+.users__list-job {
+	flex: 1;
+	display: flex;
+	justify-content: center;
 }
 
 .users__list-name {
@@ -836,6 +869,10 @@ body {
 
 .trash:hover {
 	opacity: 1;
+}
+
+.comment__icon {
+	color: #435875;
 }
 
 

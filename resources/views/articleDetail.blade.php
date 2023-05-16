@@ -72,7 +72,7 @@
     <input type="hidden" name="articles_id" value="{{ $articles->id }}" id="articles_id">
     <input type="hidden" name="users_id" value="{{ Auth::user()->id }}" id="users_id">
     <textarea class="message__txt" name="body" placeholder="コメント" id="body"></textarea>
-    <button class="message__iconWrap" id="comment"><i class="fa-solid fa-paper-plane message__icon"></i></button>
+    <button class="message__iconWrap" id="comment"><i class="fa-solid fa-paper-plane comment__icon"></i></button>
   </div>
 </div>
 @endsection
