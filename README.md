@@ -77,7 +77,7 @@ php自作
 マイページ右上から可能です。  
 
 ## 環境
-MAMP/MySQL/PHP
+MAMP version6.8/MySQL version5.7.39/PHP version8.2.0
 
 ## データベース
 データベース名：Schmee  
