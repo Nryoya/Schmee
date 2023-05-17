@@ -35,9 +35,9 @@
       <div class="article__bottom-inner">
         <p class="article__bottom-txt">コメント:<span id="comment_count">{{ $articles->comments->where('del_fg', 0)->count() }}</span></p>
         @if (Auth::user()->role == 0)
-          <span class="article__bottom-txt">いいね:{{ $articles->likes()->count() }}</span>
+          <span class="article__bottom-txt">既読数:{{ $articles->likes()->count() }}</span>
         @else
-          <a class="article__like-link" href="{{ route('like.show', $articles->id) }}">いいね一覧:{{ $articles->likes()->count() }}</a>
+          <a class="article__like-link" href="{{ route('like.show', $articles->id) }}">既読者一覧:{{ $articles->likes()->count() }}</a>
         @endif
       </div>
     </div>

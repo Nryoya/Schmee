@@ -850,6 +850,7 @@ body {
 	position: absolute;
 	top: 0;
 	left: 0;
+	color: #435875;
 }
 
 .star {
@@ -860,7 +861,6 @@ body {
 .star.active {	
 	opacity: 1;
 	visibility: visible;
-	color: #E9E500;
 }
 
 .comment__delete {
