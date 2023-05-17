@@ -830,6 +830,13 @@ body {
 	width: 14px;
 }
 
+.article__like-link {
+	display: inline-block;
+	height: 10px;
+	font-size: 1rem;
+	color: #333;
+}
+
 .article__bottom-icon {
 	color: #435875;
 }
@@ -839,11 +846,10 @@ body {
 }
 
 .fa-star {
-	transition: .4s;
+	transition: .2s;
 	position: absolute;
 	top: 0;
 	left: 0;
-	color: #435875;
 }
 
 .star {
@@ -854,6 +860,7 @@ body {
 .star.active {	
 	opacity: 1;
 	visibility: visible;
+	color: #E9E500;
 }
 
 .comment__delete {

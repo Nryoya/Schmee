@@ -32,5 +32,14 @@ class Like extends Model
         return $this->belongsTo(Article::class, 'articles_id');
     }
 
-
+    /**
+     * likeしているユーザーを取得
+     *
+     * @param integer $article_id
+     * @return \Illuminate\Support\Collection
+     */
+    public function fetchUserWhoLike(int $article_id): \Illuminate\Support\Collection
+    {
+        return $this->where('articles_id', $article_id)->get();
+    }
 }

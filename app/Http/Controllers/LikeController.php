@@ -40,4 +40,9 @@ class LikeController extends Controller
 
         return json_encode($like_array);
     }
+
+    public function show(LIke $like, int $article_id): \Illuminate\View\View 
+    {
+        return view('like.list', ['like_users' => $like->fetchUserWhoLike($article_id)]);
+    }
 }

@@ -124,6 +124,10 @@ Route::middleware(['auth'])->group(function() {
     
     Route::get('articleDetail/{id}', [ArticleController::class, 'getFindArticle'])->name('articleDetail');
 
+    Route::prefix('like')->name('like.')->group(function() {
+        Route::get('list/{article_id}', [LikeController::class, 'show'])->name('show');
+    });
+
     Route::get('articleDelete/{id}', [ArticleController::class, 'updateDelFg'])->name('updateDelFg');
 
     Route::post('/articleDetail/comment', [CommentController::class, 'comment'])->name('comment');

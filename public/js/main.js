@@ -463,6 +463,7 @@ const isOneChecked = () => {
 /**
  * イベントを止めた後にアラートを出す処理
  * 
+ * @param {HTMLElement} submittedForm
  * @param {string} alertText 
  */
 const stopEventAfterAlert = (submittedForm ,alertText) => {
