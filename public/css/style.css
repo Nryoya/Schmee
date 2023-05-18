@@ -112,11 +112,11 @@ body {
 .gradeClass__input {
 	height: 40px;
 	border-radius: 5px;
-	border: 1px solid rgba(67, 88, 117, .5);
+	border: 1px solid #333;
 }
 
 .gradeClass__input::placeholder {
-	color: rgba(67, 88, 117, .5);
+	color: #333;
 }
 
 .file {

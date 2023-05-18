@@ -28,7 +28,7 @@
           <div class="article__bottom">
             <div class="article__bottom-inner">
               <p class="article__bottom-txt">コメント:{{ $article->comments->where('del_fg', 0)->count() }}</p>
-              <p class="article__bottom-txt" >既読数:<span class="like_count">{{ $article->likes()->count() }}</span></p>
+              <p class="article__bottom-txt" >既読:<span class="like_count">{{ $article->likes()->count() }}</span></p>
             </div>
           </div>
           <div class="article__bottom">
