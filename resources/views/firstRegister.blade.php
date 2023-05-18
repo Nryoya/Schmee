@@ -9,19 +9,19 @@
         @error('grade')
           <p class="error">{{ $message }}</p>
         @enderror
-        <input class="gradeClass__input" type="text" name="grade" placeholder="学年" value="{{ old('grade') }}">
+        <input class="gradeClass__input" type="text" name="grade" placeholder="*学年" value="{{ old('grade') }}">
       </div>
       <div>
         @error('class')
           <p class="error">{{ $message }}</p>
         @enderror
-        <input class="gradeClass__input" type="text" name="class" placeholder="クラス" value="{{ old('class') }}">
+        <input class="gradeClass__input" type="text" name="class" placeholder="*クラス" value="{{ old('class') }}">
       </div>
     </div>
     @error('onething')
       <p class="error">{{ $message }}</p>
     @enderror
-    <input class="input input--blue" type="text" name="onething" placeholder="ひとこと" value="{{ old('onething') }}">
+    <input class="input input--blue" type="text" name="onething" placeholder="*ひとこと" value="{{ old('onething') }}">
     <div class="file">
       <input class="file__input" type="file" name="imgPath" value="">
       <p class="file__btn">イメージを選択</p>
@@ -29,19 +29,19 @@
     @error('tel')
       <p class="error">{{ $message }}</p>
     @enderror
-    <input class="input input--blue" type="tel" name="tel" placeholder="電話番号" value="{{ old('tel') }}">
+    <input class="input input--blue" type="tel" name="tel" placeholder="*電話番号" value="{{ old('tel') }}">
     @error('address')
       <p class="error">{{ $message }}</p>
     @enderror
-    <input class="input input--blue" type="text" name="address" placeholder="住所" value="{{ old('address') }}">
+    <input class="input input--blue" type="text" name="address" placeholder="*住所" value="{{ old('address') }}">
     @error('emergency')
       <p class="error">{{ $message }}</p>
     @enderror
-    <input class="input input--blue" type="tel" name="emergency" placeholder="緊急連絡先" value="{{ old('emergencyTel') }}">
+    <input class="input input--blue" type="tel" name="emergency" placeholder="*緊急連絡先" value="{{ old('emergencyTel') }}">
     @error('relationship')
       <p class="error">{{ $message }}</p>
     @enderror
-    <input class="input input--blue" type="text" name="relationship" placeholder="続柄" value="{{ old('relationship') }}">
+    <input class="input input--blue" type="text" name="relationship" placeholder="*続柄" value="{{ old('relationship') }}">
     <input class="submit submit--blue" type="submit" value="登録">
   </form>
 @endsection
