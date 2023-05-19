@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\School;
 use App\Models\User;
 use App\Models\UserDetail;
-use App\Models\teacherDetail;
+use App\Models\TeacherDetail;
 use Illuminate\Support\Facades\Hash;
 
 use App\Http\Requests\representativeRequest;
