@@ -68,11 +68,18 @@ function htmlspecialchars(str) {
                   .replace(/\r\n|\r|\n/g, '<br>');
 }
 if(comment) {
-  comment.addEventListener("click", () => {
+  comment.addEventListener("click", (e) => {
+    if(document.getElementById("body").value == "") {
+      e.preventDefault();
+      e.stopPropagation();
+      alert("コメントを入力してください。");
+      return;
+    }
     const post_data = new FormData;
     post_data.set("articles_id", document.getElementById("articles_id").value);
     post_data.set("users_id", document.getElementById("users_id").value);
     post_data.set("body", document.getElementById("body").value);
+
     
   
     fetch("/articleDetail/comment", {
