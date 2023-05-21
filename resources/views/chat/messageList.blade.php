@@ -25,7 +25,9 @@
               <img class="users__list-img" src="{{ Storage::url($list->users_detail->imgPath) }}">
             </div>
             <div class="users__list-detail">
-              <p>{{ $list->users_detail->grade }}年{{ $list->users_detail->class }}組</p>
+              <div class="users__list-job">
+                <p>{{ $list->users_detail->grade }}年{{ $list->users_detail->class }}組</p>
+              </div>
               <p class="users__list-name">{{ $list->name }}</p>
             </div>
           </a>
