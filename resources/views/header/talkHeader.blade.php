@@ -10,4 +10,3 @@
   </section>
   <a class="header__back" href="{{ route('messageList') }}"><i class="fa-solid fa-chevron-left header__back-icon"></i></a>
 </header>
-      @dd()
